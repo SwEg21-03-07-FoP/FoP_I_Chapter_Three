@@ -1,0 +1,3110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Fundamentals of Programming I – Chapter 3</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <style>
+        :root {
+            --bg: #fafaf7;
+            --fg: #1d2433;
+            --mu: #5b6475;
+            --ac: #1f5f8b;
+            --card: #fff;
+            --bd: #dfe3ea;
+            --code: #eef2f7;
+            box-sizing: border-box;
+            padding-top: env(safe-area-inset-top, 0px);
+            padding-bottom: env(safe-area-inset-bottom, 0px);
+            color-scheme: light
+        }
+
+        @media(prefers-color-scheme:dark) {
+            :root:not([data-theme=light]) {
+                --bg: #13171f;
+                --fg: #e8ebf1;
+                --mu: #98a2b3;
+                --ac: #6cb4e4;
+                --card: #1b212c;
+                --bd: #2c3442;
+                --code: #232b38;
+                color-scheme: dark
+            }
+        }
+
+        :root[data-theme=dark] {
+            --bg: #13171f;
+            --fg: #e8ebf1;
+            --mu: #98a2b3;
+            --ac: #6cb4e4;
+            --card: #1b212c;
+            --bd: #2c3442;
+            --code: #232b38;
+            color-scheme: dark
+        }
+
+        html {
+            scroll-padding-top: 70px;
+            scroll-behavior: smooth
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--fg);
+            font: 17px/1.65 Georgia, 'Times New Roman', serif
+        }
+
+        nav {
+            position: sticky;
+            top: env(safe-area-inset-top, 0px);
+            background: var(--bg);
+            border-bottom: 1px solid var(--bd);
+            padding: 10px 16px;
+            display: flex;
+            gap: 6px;
+            overflow-x: auto;
+            white-space: nowrap;
+            z-index: 5;
+            font: 14px system-ui, sans-serif
+        }
+
+        nav a {
+            color: var(--mu);
+            text-decoration: none;
+            padding: 4px 10px;
+            border-radius: 14px
+        }
+
+        nav a:hover {
+            background: var(--code);
+            color: var(--ac)
+        }
+
+        nav b {
+            display: none
+        }
+
+        @media(min-width:900px) {
+            html {
+                scroll-padding-top: 20px
+            }
+
+            body {
+                padding-left: 250px
+            }
+
+            nav {
+                position: fixed;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                width: 320px;
+                box-sizing: border-box;
+                flex-direction: column;
+                gap: 2px;
+                padding: calc(24px + env(safe-area-inset-top, 0px)) 14px 24px;
+                border-bottom: 0;
+                border-right: 1px solid var(--bd);
+                overflow-y: auto;
+                white-space: normal;
+                font-size: 15px
+            }
+
+            nav b {
+                display: block;
+                font: 700 12px system-ui;
+                letter-spacing: .08em;
+                text-transform: uppercase;
+                color: var(--ac);
+                padding: 0 10px 10px
+            }
+
+            nav a {
+                border-radius: 8px;
+                padding: 7px 10px
+            }
+        }
+
+        header {
+            max-width: 820px;
+            margin: 0 auto;
+            padding: 48px 20px 8px
+        }
+
+        h1 {
+            font-size: clamp(28px, 5vw, 42px);
+            line-height: 1.15;
+            margin: .3em 0;
+            text-align: center
+        }
+
+        main {
+            max-width: 820px;
+            margin: 0 auto;
+            padding: 0 20px 60px
+        }
+
+        h2 {
+            margin-top: 1.5em;
+            padding-top: .4em;
+            border-top: 2px solid var(--ac);
+            font-size: 26px
+        }
+
+        h3 {
+            margin-bottom: .2em;
+            font-size: 19px
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--bd);
+            border-radius: 10px;
+            padding: 14px 18px;
+            margin: 12px 0
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 12px
+        }
+
+        .grid .card {
+            margin: 0
+        }
+
+        .card h3 {
+            margin-top: 0;
+            color: var(--ac)
+        }
+
+        ol.steps {
+            counter-reset: s;
+            list-style: none;
+            padding: 0
+        }
+
+        ol.steps li {
+            counter-increment: s;
+            margin: 8px 0;
+            padding-left: 44px;
+            position: relative
+        }
+
+        ol.steps li:before {
+            content: counter(s);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: var(--ac);
+            color: var(--bg);
+            font: 700 15px/30px system-ui;
+            text-align: center
+        }
+
+        .tw {
+            overflow-x: auto
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            font-size: 15px
+        }
+
+        th,
+        td {
+            border: 1px solid var(--bd);
+            padding: 8px 10px;
+            text-align: left;
+            vertical-align: top
+        }
+
+        th {
+            background: var(--code);
+            font-family: system-ui
+        }
+
+        pre {
+            background: var(--code);
+            padding: 12px 16px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font: 14px/1.5 ui-monospace, Menlo, monospace
+        }
+
+        code {
+            background: var(--code);
+            padding: 1px 5px;
+            border-radius: 4px;
+            font: .9em ui-monospace, Menlo, monospace
+        }
+
+        details {
+            background: var(--card);
+            border: 1px solid var(--bd);
+            border-radius: 10px;
+            padding: 10px 16px;
+            margin: 10px 0
+        }
+
+        summary {
+            cursor: pointer;
+            font-weight: 700;
+            color: var(--ac);
+            font-family: system-ui
+        }
+
+        .tip {
+            background: var(--code);
+            border-left: 4px solid var(--ac);
+            border-radius: 6px;
+            padding: 10px 16px;
+            margin: 14px 0;
+            font-size: 16px
+        }
+
+        .tip b:first-child {
+            display: block;
+            font: 700 12px system-ui;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            color: var(--ac);
+            margin-bottom: 2px
+        }
+
+        dt {
+            font-weight: 700;
+            margin-top: 10px
+        }
+
+        dd {
+            margin: 0 0 0 18px;
+            color: var(--mu)
+        }
+
+        footer {
+            text-align: center;
+            color: var(--mu);
+            font: 14px system-ui;
+            padding: 30px 20px
+        }
+
+        .exq,
+        .qz .q {
+            background: var(--card);
+            border: 1px solid var(--bd);
+            border-radius: 10px;
+            padding: 12px 16px;
+            margin: 12px 0
+        }
+
+        .exq textarea,
+        .exq input {
+            width: 100%;
+            box-sizing: border-box;
+            background: var(--code);
+            color: var(--fg);
+            border: 1px solid var(--bd);
+            border-radius: 8px;
+            padding: 8px;
+            font: 14px/1.5 ui-monospace, Menlo, monospace
+        }
+
+        .exq textarea {
+            min-height: 80px
+        }
+
+        .btn {
+            font: 14px system-ui;
+            background: var(--ac);
+            color: var(--bg);
+            border: 0;
+            border-radius: 16px;
+            padding: 6px 16px;
+            cursor: pointer;
+            margin-top: 8px
+        }
+
+        .btn:disabled {
+            opacity: .5;
+            cursor: default
+        }
+
+        .msg {
+            font: 14px system-ui;
+            color: var(--mu);
+            margin-left: 8px
+        }
+
+        .sol {
+            margin-top: 10px;
+            border-top: 1px dashed var(--bd);
+            padding-top: 8px
+        }
+
+        .qz button.o {
+            display: block;
+            width: 100%;
+            text-align: left;
+            margin: 6px 0;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font: 15px system-ui;
+            background: var(--code);
+            color: var(--fg);
+            border: 1px solid var(--bd);
+            cursor: pointer
+        }
+
+        .ok {
+            border-color: #2e9b57 !important;
+            background: rgba(46, 155, 87, .2) !important
+        }
+
+        .no {
+            border-color: #c0392b !important;
+            background: rgba(192, 57, 43, .2) !important
+        }
+
+        .why {
+            font: 14px system-ui;
+            color: var(--mu);
+            margin-top: 6px
+        }
+
+        .opt {
+            font: 14px system-ui;
+            background: var(--code);
+            color: var(--fg);
+            border: 1px solid var(--bd);
+            border-radius: 14px;
+            padding: 4px 12px;
+            margin: 3px 4px 3px 0;
+            cursor: pointer
+        }
+
+        .opt.ok {
+            border-color: #2e9b57;
+            background: rgba(46, 155, 87, .2)
+        }
+
+        .opt.no {
+            border-color: #c0392b;
+            background: rgba(192, 57, 43, .2)
+        }
+
+        .opt {
+            font: 14px system-ui;
+            background: var(--code);
+            color: var(--fg);
+            border: 1px solid var(--bd);
+            border-radius: 14px;
+            padding: 4px 12px;
+            margin: 3px 4px 3px 0;
+            cursor: pointer
+        }
+
+        .opt.ok {
+            border-color: #2e9b57;
+            background: rgba(46, 155, 87, .2)
+        }
+
+        .opt.no {
+            border-color: #c0392b;
+            background: rgba(192, 57, 43, .2)
+        }
+
+        .opt {
+            font: 14px system-ui;
+            background: var(--code);
+            color: var(--fg);
+            border: 1px solid var(--bd);
+            border-radius: 14px;
+            padding: 4px 12px;
+            margin: 3px 4px 3px 0;
+            cursor: pointer
+        }
+
+        .opt.ok {
+            border-color: #2e9b57;
+            background: rgba(46, 155, 87, .2)
+        }
+
+        .opt.no {
+            border-color: #c0392b;
+            background: rgba(192, 57, 43, .2)
+        }
+
+        .opt {
+            font: 14px system-ui;
+            background: var(--code);
+            color: var(--fg);
+            border: 1px solid var(--bd);
+            border-radius: 14px;
+            padding: 4px 12px;
+            margin: 3px 4px 3px 0;
+            cursor: pointer
+        }
+
+        .opt.ok {
+            border-color: #2e9b57;
+            background: rgba(46, 155, 87, .2)
+        }
+
+        .opt.no {
+            border-color: #c0392b;
+            background: rgba(192, 57, 43, .2)
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <b>Chapter 3 contents</b>
+        <a href="#intro">3.1 Flow Control</a>
+        <a href="#block">3.2 Revision: Blocks and Statements</a>
+        <a href="#selintro3">3.3 Selection Statements</a>
+
+        <a href="#if">3.3.1. The <code>if</code> Statement</a>
+        <a href="#ifelse">3.3.2. The <code>if-else</code> Statement</a>
+        <a href="#nested">3.3.3. Nested  <code>if-else</code> Statement</a>
+        <a href="#elseif">3.3.4. The  <code>else-if</code> ladder</a>
+        <a href="#switch">3.3.5. The switch case Statement</a>
+
+        <a href="#loopintro">3.4 Looping Overview</a>
+        <a href="#for">3.4.1. The  <code>for loop</code> Statement</a>
+        <a href="#while">3.4.2. The  <code>while loop</code> Statement</a>
+        <a href="#dowhile">3.4.3. The  <code>do-while loop </code>Statement</a>
+        <a href="#nestedloop">3.4.4. Nested loops</a>
+
+        <a href="#jumpintro">3.5 Jump Statements</a>
+        <a href="#break">3.5.1. The  <code>break</code> Statement</a>
+        <a href="#continue">3.5.2. The  <code>continue</code> Statement</a>
+        <a href="#return">3.5.3. The  <code>return</code> Statement</a>
+        <a href="#goto">3.5.4. The  <code>goto (avoid)</code> Statement</a>
+        <a href="#terminate">3.5.5. The  <code>exit & abort</code> Functions</a>
+
+        <a href="#fmtio">3.6. Formatted I/O (Revision)</a>
+        <a href="#choose2">3.7. Choosing the Right Construct</a>
+        <a href="#mis">3.8. Common Misconceptions</a>
+        <a href="#practice">3.9. Practice Exercises</a>
+        <a href="#gloss">3.10. Glossary</a>
+        <a href="#checku">3.11. Check Understanding</a>
+        <a href="#check">3.12. Self-check Quiz</a>
+    </nav>
+
+    <header>
+        <h1>Chapter Three<br>Program Flow Control</h1>
+        <p style="color:var(--mu);text-align:center">Selection (if, if-else, else-if, switch), looping (for, while,
+            do-while), and jump statements (break, continue, return).</p>
+        <div class="tip"><b>New to flow control? Start here</b>In Chapter 2 your programs ran one statement after
+            another, top to bottom. This chapter gives you three new powers: <b>choose</b> between paths, <b>repeat</b>
+            a block of code, and <b>jump</b> out of or skip part of a repeat. Every construct below follows the same
+            pattern: an explanation, its syntax, a one-sentence summary, an everyday analogy, two running case studies
+            (a café and a bus terminal), and a complete working example. Read in order and type every example yourself.
+        </div>
+
+        <div class="card">
+            <h3>Learning objectives</h3>
+            <p>By the end of this chapter you will be able to:</p>
+            <ul>
+                <li>explain, in everyday words, what each selection and loop statement does;</li>
+                <li>choose the right construct — if, if-else, else-if, switch, for, while, or do-while — for a given
+                    problem;</li>
+                <li>trace a flowchart or <b>Pseudocode</b> for a selection or loop statement by hand;</li>
+                <li>write correctly nested if-else statements and avoid the dangling-else trap;</li>
+                <li>write count-controlled loops with for, and event-controlled loops with while or do-while;</li>
+                <li>use break and continue correctly inside a loop, and know when not to use goto;</li>
+                <li>recognize and avoid the common mistakes beginners make with each construct.</li>
+            </ul>
+        </div>
+    </header>
+
+    <main>
+        <h2 id="intro" style="margin-top: 1%;">
+            3.1 What is flow control?
+        </h2>
+        <ul>
+            <li>A running program spends its whole time <b>executing statements (instructions) one at a time</b>
+            <li>The order in which the instructions are run or executed is called the <b>program flow</b></li>
+            <li>By default, the program flow is <b>sequential</b>: top to bottom, in the order they are written.</li>
+            <li><b>Flow control</b> statements let the programmer to change that order: branch to a different statement, or
+                repeat a block of statements.</li>
+            <li>There are three basic flow constructs: <b>sequential</b> (default), <b>selection</b> (decision), and
+                <b>repetition</b> (loop).</li>
+        </ul>
+        <div class="tip"><b>In plain words</b>Without flow control, a program is a straight road. Selection statements
+            are junctions: the program takes one branch or another. Loops are roundabouts: the program goes around until
+            a condition tells it to exit.
+        </div>
+
+        <h2 id="block">3.2 Revision: blocks and statements</h2>
+        <ul>
+            <li>A <b>statement</b> is one instruction, ending with a semicolon.</li>
+            <li>A <b>block</b> (or compound statement) is a group of statements inside braces <code>{ }</code>. </li>
+            <li>To the compiler, a block counts as a single statement.</li>
+            <li>Blocks can be <b>nested</b> inside other blocks.</li>
+            <li>Most control structures expect one statement to be executed by default. </li>
+            <li>If you want several statements to be controlled by flow structure, you must wrap them in braces.</li>
+        </ul>
+<pre>
+flow control statement
+{
+    statement1;
+    statement2;
+    statement3;
+}
+</pre>
+        <div class="tip">
+            <b>Careful: </b>Every selection and loop statement controls exactly <b>one</b> statement after
+            it. If you forget the braces around several statements, only the first one is actually inside the if or loop
+            — a very common beginner bug.
+        </div>
+        <h2 id="selintro3">3.3 Selection statements</h2>
+        <p><strong>Selection statements</strong> also called <strong>decision statements</strong> choose whether, or which, statements run, based on a condition evaluated at
+            run time. Most programming language including C++ provides four <b>Selection Statements</b>: <code>if</code>, <code>if-else</code>, the <code>else-if</code> ladder, and
+            <code>switch</code>.</p>
+        <p>
+            The following section discuss each one of them with their syntax, using real world an analogy, case studies, and a complete worked example.
+        </p>
+
+        <h2 id="if">3.3.1. The if Statement</h2>
+        <p>
+            It is sometimes desirable to make the execution of a statement dependent upon a condition being satisfied. 
+            The if statement provides a way of expressing this and allows for conditional execution. 
+        </p>
+        The <code>if statement</code> flow control:
+        <ul>
+            <li>Executes a statement or block of code <b>only if</b> a condition is true or satisfied.</li>
+            <li>There is no “otherwise” action — if the condition is false or not satisfied, the execution simply continues with whatever instruction comes after the <code>if statement.</code></li>
+        </ul>
+        <h3>(i) Syntax</h3>
+<pre>
+if (boolean expression) {
+    // block of statements;
+}
+next statement(s);
+</pre>
+        <div class="lab">What each part means?</div>
+        <ul>
+            <li><code>Boolean expression: </code> It is expression that must evaluate to a boolean (true/false)</li>
+            <li>Usually built from relational expression(s) (<code>&lt;</code>, <code>&gt;=</code>, <code>==</code> ...) 
+                that can be connected using logical operators (<code>&amp;&amp;</code>,
+                <code>||</code>, <code>!</code>), refer back to Chapter 2.</li>
+            <li>When the <code>expression</code> is true, the block is get executed, then execution continues with what follows.</li>
+            <li>Otherwise, if the condition evaluated to false, the block is skipped entirely, and execution continues with what follows.</li>
+            <li><code>next statement(s)</code> always runs, whether or not the if-block executed.</li>
+        </ul>
+
+        <div class="tip">
+            <b>In one sentence</b>Do something only when a condition is true and continue with normal execution.
+        </div>
+
+        <h3> (ii) Everyday Analogy</h3>
+        <p class="card">
+            If it is raining, take an umbrella. If it is not raining, you simply carry on. 
+            <br>There is no “otherwise” action. You simply carry on with your daily work.
+        </p>
+    
+        <h3>(iii) Case studies </h3>
+        <h4>1— Campus Café</h4>
+        <div class="grid">
+            <div class="card">
+                <h3>Problem description</h3>
+                <p>If the customer shows a student ID, give a 10% discount. Otherwise the price stays the same, and
+                    nothing special happens.</p>
+            </div>
+            <div>
+                <div class="lab"><b>Pseudocode</b></div>
+                <pre>if customer has student ID then
+    give 10% discount
+take the order</pre>
+            </div>
+        </div>
+        <div class="lab" style="margin-top: 3%;"><b>Flowchart</b></div>
+        <div class="fcw"><svg class="fc" viewBox="-4.6 -2 358.6 341" width="358.6" role="img"
+                aria-label="Flowchart: if, student discount" xmlns="http://www.w3.org/2000/svg">
+                <g fill="none" stroke="var(--ac,#1f5f8b)" stroke-width="2" stroke-linejoin="round">
+                    <polyline points="200,48 200,79" />
+                    <polyline points="115,115 90,115 90,195" />
+                    <polyline points="90,235 90,260 200,260 200,285" />
+                    <polyline points="285,115 340,115 340,305 269.2,305" />
+                </g>
+                <g fill="var(--ac,#1f5f8b)">
+                    <polygon points="200,79 195,70 205,70" />
+                    <polygon points="90,195 85,186 95,186" />
+                    <polygon points="200,285 195,276 205,276" />
+                    <polygon points="269.2,305 278.2,300 278.2,310" />
+                </g>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="152" y="12" width="96"
+                    height="36" rx="18" /><text x="200" y="31" text-anchor="middle" dominant-baseline="central"
+                    font-size="14" font-family="system-ui,sans-serif" fill="var(--fg,#1d2433)">Start</text>
+                <polygon fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2"
+                    points="200,79 285,115 200,151 115,115" /><text x="200" y="116" text-anchor="middle"
+                    dominant-baseline="central" font-size="14" font-family="system-ui,sans-serif"
+                    fill="var(--fg,#1d2433)">Has student ID?</text>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="9.4" y="195" width="161.2"
+                    height="40" rx="4" /><text x="90" y="216" text-anchor="middle" dominant-baseline="central"
+                    font-size="14" font-family="system-ui,sans-serif" fill="var(--fg,#1d2433)">Give 10% discount</text>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="130.8" y="285"
+                    width="138.4" height="40" rx="4" /><text x="200" y="306" text-anchor="middle"
+                    dominant-baseline="central" font-size="14" font-family="system-ui,sans-serif"
+                    fill="var(--fg,#1d2433)">Take the order</text><text x="115" y="103" text-anchor="middle"
+                    dominant-baseline="central" font-size="12" font-weight="700" font-family="system-ui,sans-serif"
+                    fill="var(--ac,#1f5f8b)"
+                    style="paint-order:stroke;stroke:var(--bg,#fafaf7);stroke-width:4px">Yes</text><text x="310" y="103"
+                    text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="700"
+                    font-family="system-ui,sans-serif" fill="var(--ac,#1f5f8b)"
+                    style="paint-order:stroke;stroke:var(--bg,#fafaf7);stroke-width:4px">No</text>
+            </svg></div>
+
+        <h4>2 — City Bus Terminal</h4>
+
+        <div class="grid">
+            <div class="card">
+                <h3>Problem description</h3>
+                <p>If a bag weighs more than 20 kg, add a baggage fee. Otherwise nothing extra happens.</p>
+                <p class="mu" style="color:var(--mu)">Everyday echo: taking an umbrella only if it rains</p>
+            </div>
+            <div>
+                <div class="lab"><b>Pseudocode</b></div>
+<pre>
+if bag weight &gt; 20 then
+    add baggage fee
+issue the bag tag
+</pre>
+            </div>
+        </div>
+        <div class="lab" style="margin-top: 3%;"><b>Flowchart</b></div>
+        <div class="fcw"><svg class="fc" viewBox="3 -2 381 341" width="381" role="img"
+                aria-label="Flowchart: if, excess baggage" xmlns="http://www.w3.org/2000/svg">
+                <g fill="none" stroke="var(--ac,#1f5f8b)" stroke-width="2" stroke-linejoin="round">
+                    <polyline points="210,48 210,79" />
+                    <polyline points="125,115 90,115 90,195" />
+                    <polyline points="90,235 90,260 210,260 210,285" />
+                    <polyline points="295,115 370,115 370,305 290.6,305" />
+                </g>
+                <g fill="var(--ac,#1f5f8b)">
+                    <polygon points="210,79 205,70 215,70" />
+                    <polygon points="90,195 85,186 95,186" />
+                    <polygon points="210,285 205,276 215,276" />
+                    <polygon points="290.6,305 299.6,300 299.6,310" />
+                </g>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="162" y="12" width="96"
+                    height="36" rx="18" /><text x="210" y="31" text-anchor="middle" dominant-baseline="central"
+                    font-size="14" font-family="system-ui,sans-serif" fill="var(--fg,#1d2433)">Start</text>
+                <polygon fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2"
+                    points="210,79 295,115 210,151 125,115" /><text x="210" y="116" text-anchor="middle"
+                    dominant-baseline="central" font-size="14" font-family="system-ui,sans-serif"
+                    fill="var(--fg,#1d2433)">Bag over 20 kg?</text>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="17" y="195" width="146"
+                    height="40" rx="4" /><text x="90" y="216" text-anchor="middle" dominant-baseline="central"
+                    font-size="14" font-family="system-ui,sans-serif" fill="var(--fg,#1d2433)">Add baggage fee</text>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="129.4" y="285"
+                    width="161.2" height="40" rx="4" /><text x="210" y="306" text-anchor="middle"
+                    dominant-baseline="central" font-size="14" font-family="system-ui,sans-serif"
+                    fill="var(--fg,#1d2433)">Issue the bag tag</text><text x="120" y="103" text-anchor="middle"
+                    dominant-baseline="central" font-size="12" font-weight="700" font-family="system-ui,sans-serif"
+                    fill="var(--ac,#1f5f8b)"
+                    style="paint-order:stroke;stroke:var(--bg,#fafaf7);stroke-width:4px">Yes</text><text x="335" y="103"
+                    text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="700"
+                    font-family="system-ui,sans-serif" fill="var(--ac,#1f5f8b)"
+                    style="paint-order:stroke;stroke:var(--bg,#fafaf7);stroke-width:4px">No</text>
+            </svg></div>
+        <h3>Example: Complete Code</h3>
+        <p class="rem" style="color:var(--mu)">
+            This program codes the Campus Café scenario above. <br>
+            Compile it, run it, and test it with the sample run provided.
+        </p>
+<pre>
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+using namespace std;
+
+int main() {
+    double price;
+    int isStudent;
+
+    cout &lt;&lt; "Enter the order price: ";
+    cin &gt;&gt; price;
+    cout &lt;&lt; "Student? (1 = yes, 0 = no): ";
+    cin &gt;&gt; isStudent;
+
+    if (isStudent == 1) {
+        price = price * 0.90;        // apply a 10% discount
+    }
+
+    cout &lt;&lt; fixed &lt;&lt; setprecision(2);
+    cout &lt;&lt; "Price to pay: " &lt;&lt; price &lt;&lt; " birr" &lt;&lt; endl;
+    return 0;
+}
+</pre>
+        <div class="lab">Sample run</div>
+        <pre>Enter the order price: 200
+Student? (1 = yes, 0 = no): 1
+Price to pay: 180.00 birr
+</pre>
+
+        <h2 id="ifelse">3.3.2. The if-else statement</h2>
+        It is the extension of the basic <code>if</code> statement by adding the <code>else</code> clause 
+        (i.e. it provides the option to specify what we want to happen if the condition is not fulfilled by using the keyword else). 
+        In simple terms:
+        <ul>
+            <li>It adds an <b>else</b> branch and make the program to choose between two actions (block of codes).
+             <br>one action executed when the condition is true, and a different action executed when it is false.</li>
+            <li>Exactly one of the two branches runs — never both, never neither.</li>
+        </ul>
+        <h3>(i) Syntax</h3>
+<pre>
+if (boolean expression) {
+    statement1 / block1;
+}
+else {
+    statement2 / block2;
+}
+next statement(s);
+</pre>
+
+        <div class="lab">What each part means</div>
+        <ul>
+            <li>When the <code>boolean expression</code> is evaluated to <b>True</b>, <code>block1</code> executed and <code>block2</code> is skipped.</li>
+            <li>Otherwise when the <code>boolean expression</code> is <b>false</b>, <code>block2</code> executed and <code>block1</code> is skipped.</li>
+            <li>Braces may be omitted when a branch has only one statement, but keeping them is recommended — it
+                protects you if you add a second statement later.</li>
+        </ul>
+        <div class="tip">
+            <b>In one sentence</b>Execute exactly one of the two actions — never both, never neither.
+        </div>
+
+        <h3>(ii) Everyday analogy</h3>
+        <p class="card">
+            A fork in the road: left or right. You take one, never both and never neither. 
+            <br>A traffic light works the same way: green go, otherwise stop.
+        </p>
+    
+        <h3>(iii) Case studies</h3>
+        <h4>1 — Campus Café</h4> 
+        <div class="grid">
+            <div class="card">
+                <h3>Problem description</h3>
+                <p>If the card balance is enough, pay by card. Otherwise ask for cash.</p>
+            </div>
+            <div>
+                <div class="lab"><b>Pseudocode</b></div>
+                <pre>if card balance is enough then
+    pay by card
+else
+    ask for cash
+give the receipt</pre>
+            </div>
+        </div>
+        <div class="lab" style="margin-top: 3%;"><b>Flowchart</b></div>
+        <div class="fcw"><svg class="fc" viewBox="-4 -2 409.6 341" width="409.6" role="img"
+                aria-label="Flowchart: if-else, card or cash" xmlns="http://www.w3.org/2000/svg">
+                <g fill="none" stroke="var(--ac,#1f5f8b)" stroke-width="2" stroke-linejoin="round">
+                    <polyline points="200,48 200,79" />
+                    <polyline points="115,115 70,115 70,195" />
+                    <polyline points="285,115 330,115 330,195" />
+                    <polyline points="70,235 70,260 200,260 200,285" />
+                    <polyline points="330,235 330,260 200,260 200,285" />
+                </g>
+                <g fill="var(--ac,#1f5f8b)">
+                    <polygon points="200,79 195,70 205,70" />
+                    <polygon points="70,195 65,186 75,186" />
+                    <polygon points="330,195 325,186 335,186" />
+                    <polygon points="200,285 195,276 205,276" />
+                    <polygon points="200,285 195,276 205,276" />
+                </g>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="152" y="12" width="96"
+                    height="36" rx="18" /><text x="200" y="31" text-anchor="middle" dominant-baseline="central"
+                    font-size="14" font-family="system-ui,sans-serif" fill="var(--fg,#1d2433)">Start</text>
+                <polygon fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2"
+                    points="200,79 285,115 200,151 115,115" /><text x="200" y="116" text-anchor="middle"
+                    dominant-baseline="central" font-size="14" font-family="system-ui,sans-serif"
+                    fill="var(--fg,#1d2433)">Balance enough?</text>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="10" y="195" width="120"
+                    height="40" rx="4" /><text x="70" y="216" text-anchor="middle" dominant-baseline="central"
+                    font-size="14" font-family="system-ui,sans-serif" fill="var(--fg,#1d2433)">Pay by card</text>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="268.4" y="195"
+                    width="123.2" height="40" rx="4" /><text x="330" y="216" text-anchor="middle"
+                    dominant-baseline="central" font-size="14" font-family="system-ui,sans-serif"
+                    fill="var(--fg,#1d2433)">Ask for cash</text>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="123.2" y="285"
+                    width="153.6" height="40" rx="4" /><text x="200" y="306" text-anchor="middle"
+                    dominant-baseline="central" font-size="14" font-family="system-ui,sans-serif"
+                    fill="var(--fg,#1d2433)">Give the receipt</text><text x="110" y="103" text-anchor="middle"
+                    dominant-baseline="central" font-size="12" font-weight="700" font-family="system-ui,sans-serif"
+                    fill="var(--ac,#1f5f8b)"
+                    style="paint-order:stroke;stroke:var(--bg,#fafaf7);stroke-width:4px">Yes</text><text x="292" y="103"
+                    text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="700"
+                    font-family="system-ui,sans-serif" fill="var(--ac,#1f5f8b)"
+                    style="paint-order:stroke;stroke:var(--bg,#fafaf7);stroke-width:4px">No</text>
+            </svg></div>
+        <h4>2- City Bus Terminal</h4>
+        <div class="grid">
+            <div class="card">
+                <h3>Problem description</h3>
+                <p>If seats are left, issue a ticket. Otherwise say “sold out”.</p>
+                <p class="mu" style="color:var(--mu)">Everyday echo: a fork in the road: one path only</p>
+            </div>
+            <div>
+                <div class="lab"><b>Pseudocode</b></div>
+                <pre>if seats left &gt; 0 then
+    issue the ticket
+else
+    say "sold out"
+next passenger</pre>
+            </div>
+        </div>
+        <div class="lab" style="margin-top: 3%;"><b>Flowchart</b></div>
+        <div class="fcw"><svg class="fc" viewBox="-20.8 -2 430.2 341" width="430.2" role="img"
+                aria-label="Flowchart: if-else, sell a seat" xmlns="http://www.w3.org/2000/svg">
+                <g fill="none" stroke="var(--ac,#1f5f8b)" stroke-width="2" stroke-linejoin="round">
+                    <polyline points="200,48 200,79" />
+                    <polyline points="130.2,115 70,115 70,195" />
+                    <polyline points="269.8,115 330,115 330,195" />
+                    <polyline points="70,235 70,260 200,260 200,285" />
+                    <polyline points="330,235 330,260 200,260 200,285" />
+                </g>
+                <g fill="var(--ac,#1f5f8b)">
+                    <polygon points="200,79 195,70 205,70" />
+                    <polygon points="70,195 65,186 75,186" />
+                    <polygon points="330,195 325,186 335,186" />
+                    <polygon points="200,285 195,276 205,276" />
+                    <polygon points="200,285 195,276 205,276" />
+                </g>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="152" y="12" width="96"
+                    height="36" rx="18" /><text x="200" y="31" text-anchor="middle" dominant-baseline="central"
+                    font-size="14" font-family="system-ui,sans-serif" fill="var(--fg,#1d2433)">Start</text>
+                <polygon fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2"
+                    points="200,79 269.8,115 200,151 130.2,115" /><text x="200" y="116" text-anchor="middle"
+                    dominant-baseline="central" font-size="14" font-family="system-ui,sans-serif"
+                    fill="var(--fg,#1d2433)">Seats left?</text>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="-6.8" y="195" width="153.6"
+                    height="40" rx="4" /><text x="70" y="216" text-anchor="middle" dominant-baseline="central"
+                    font-size="14" font-family="system-ui,sans-serif" fill="var(--fg,#1d2433)">Issue the ticket</text>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="264.6" y="195"
+                    width="130.8" height="40" rx="4" /><text x="330" y="216" text-anchor="middle"
+                    dominant-baseline="central" font-size="14" font-family="system-ui,sans-serif"
+                    fill="var(--fg,#1d2433)">Say: sold out</text>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="130.8" y="285"
+                    width="138.4" height="40" rx="4" /><text x="200" y="306" text-anchor="middle"
+                    dominant-baseline="central" font-size="14" font-family="system-ui,sans-serif"
+                    fill="var(--fg,#1d2433)">Next passenger</text><text x="125" y="103" text-anchor="middle"
+                    dominant-baseline="central" font-size="12" font-weight="700" font-family="system-ui,sans-serif"
+                    fill="var(--ac,#1f5f8b)"
+                    style="paint-order:stroke;stroke:var(--bg,#fafaf7);stroke-width:4px">Yes</text><text x="278" y="103"
+                    text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="700"
+                    font-family="system-ui,sans-serif" fill="var(--ac,#1f5f8b)"
+                    style="paint-order:stroke;stroke:var(--bg,#fafaf7);stroke-width:4px">No</text>
+            </svg></div>
+
+        <h3>Example: Complete Code</h3>
+        <p class="rem" style="color:var(--mu)">
+            This program codes the Campus Café scenario above. <br>
+            Compile it, run it, and test it with the sample run provided.
+        <pre>
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+using namespace std;
+
+int main() {
+    double price, balance;
+
+    cout &lt;&lt; "Enter the price: ";
+    cin &gt;&gt; price;
+    cout &lt;&lt; "Enter the card balance: ";
+    cin &gt;&gt; balance;
+
+    cout &lt;&lt; fixed &lt;&lt; setprecision(2);
+    if (balance &gt;= price) {
+        balance = balance - price;
+        cout &lt;&lt; "Pay by card. New balance: " &lt;&lt; balance &lt;&lt; endl;
+    } else {
+        cout &lt;&lt; "Ask for cash. Still needed: " &lt;&lt; price - balance &lt;&lt; endl;
+    }
+    return 0;
+}</pre>
+        <div class="lab">Sample run</div>
+        <pre>Enter the price: 120
+Enter the card balance: 80
+Ask for cash. Still needed: 40.00</pre>
+        <h3>Comparison with an earlier construct</h3>
+        <p>An <code>if</code> on its own has no action for the "otherwise" case. <code>if-else</code> adds that missing
+            branch:</p>
+        <div class="tw">
+            <table>
+                <tr>
+                    <th></th>
+                    <th>if</th>
+                    <th>if-else</th>
+                </tr>
+                <tr>
+                    <td>Branches</td>
+                    <td>One (runs or is skipped)</td>
+                    <td>Two (exactly one always runs)</td>
+                </tr>
+                <tr>
+                    <td>When nothing should happen on failure</td>
+                    <td>Fits well</td>
+                    <td>Overkill — the else would be empty</td>
+                </tr>
+                <tr>
+                    <td>When something must always happen</td>
+                    <td>Needs a second, separate if <br>(checking the opposite condition)</td>
+                    <td>Fits naturally, in the else</td>
+                </tr>
+            </table>
+        </div>
+        <div class="tip">
+            <b>Revision: the conditional operator</b>From Chapter 2, <code><strong>? :</strong></code> is used to abbreviate simple 
+            <code>if-else</code> statements that only <b>chooses a value</b>, not statements:</div>
+        <pre>
+minVal = (num1 &lt; num2) ? num1 : num2;   // same idea as an if-else, for one value
+cout &lt;&lt; (mark &gt;= 50 ? "PASS" : "FAIL") &lt;&lt; endl;
+</pre>
+
+        <p>Use <code>if-else</code> when a branch must <b>run statements</b> and use <code>?:</code> only to pick between
+            two <b>values</b> inside a larger expression.</p>
+
+        <h2 id="nested">3.3.3. Nested if-else and the Dangling else</h2>
+        <p>A selection statement may contain another selection statement — this is called <b>nesting statement</b>.
+            <br> A common pattern nests an if-else inside the else branch of another:
+        </p>
+        <b>Example:</b>
+        <pre>if (ch &gt;= '0' &amp;&amp; ch &lt;= '9')
+    kind = digit;
+else {
+    if (ch &gt;= 'A' &amp;&amp; ch &lt;= 'Z')
+        kind = upperLetter;
+    else {
+        if (ch &gt;= 'a' &amp;&amp; ch &lt;= 'z')
+            kind = lowerLetter;
+        else
+            kind = special;
+    }
+}</pre>
+        <p> When <code>if..else</code> statements are nested, the compiler always matches 
+            <code>else</code> with the <b>nearest unmatched if</b> above it.
+        </p>
+        <div class="tip">
+         <b>Note:</b> If your intention does not match that rule, the result is the common <strong>dangling else</strong> problem.
+         <p>
+            See the example below which demonstrate this problem.
+         </p>
+        </div>
+<pre>
+if (i == 0)
+    if (j == 0)
+        cout &lt;&lt; "i and j are zero" &lt;&lt; endl;
+else cout &lt;&lt; "i is not zero" &lt;&lt; endl;
+</pre>
+
+        <p>In this example the <code>else</code> looks like it matches the <strong>OUTER <code>if</code></strong>, but the compiler attaches it to the
+            <b>inner</b><code> if(j == 0)</code>, not the outer one.</p>
+        <p>
+            So when <code>i</code> is not 0, <b>nothing</b> is printed — not what the indentation suggests.
+            <br>
+            This problem is fixed by explicitly adding braces as follow:
+        </p>
+        <pre>
+if (i == 0) {
+    if (j == 0) cout &lt;&lt; "i and j are zero" &lt;&lt; endl;
+}
+else {
+    cout &lt;&lt; "i is not zero" &lt;&lt; endl;   // now no ambiguity: the else matches the outer if
+}</pre>
+        <div class="tip"><b>Rule of thumb:</b>When you nest an <code>if</code> inside another <code>if's</code> branch, add braces. 
+            It costs nothing and removes any doubt about which <code>if</code> an <code>else</code> belongs to.</div>
+
+        <h2 id="elseif">3.3.4. The if-else-if ladder</h2>
+        <p>
+            The <code>if … else</code> statement allows for conditional execution based up on two alternatives only.
+             If you have more than two possible alternatives, you can link together a sequence of <code>if … else</code> statements.
+             <br>
+             This construction is called <code>if … else if</code> statement or <code>else if</code> ladder.
+        </p>
+        In simple terms:
+        <ul>
+            <li>This conditional flow control is used for a problem that has more than two alternatives </li> 
+            <li>It formed by chaining <code> if-else</code> statements together.</li>
+            <li>Conditions are tested <b>from the top to down</b>. 
+                <br>The first condition that is evaluated to true is execute its block, and the rest of
+                the ladder is skipped.</li>
+        </ul>
+        <h3>(i) Syntax</h3>
+        <pre>
+if (boolean expression 1) {
+    statements1;
+}
+else if (boolean expression 2) {
+    statements2;
+}
+else if (boolean expression 3) {
+    statements3;
+}
+.
+.
+.
+else {
+    default_statements;
+}</pre>
+        <div class="lab">What each part means</div>
+        <ul>
+            <li>The boolean expression for each <code>else if</code> ladder is evaluated to <strong>True / False</strong></li>
+            <li>Only one block in the whole ladder ever executes: the one attached to the <b>first true</b> condition.</li>
+            <li>The final, plain <code>else</code> is optional — it catches every case not covered by <code>else if </code>ladder.</li>
+            <li><b>Order matters:</b> test the most specific or narrowest condition <b>first</b>; the broadest or default case
+                goes <b>last</b>.</li>
+        </ul>
+        <div class="tip"><b>In one sentence</b>Test several conditions in order; the first true condition executed and the rest skipped.</div>
+        
+        <h3> (ii) Everyday analogy</h3>
+        <p class="card">A ticket office with price for groups of people: child, student, adult, senior. 
+            It is checked from the top-down and get the <b>first</b> group that fits. 
+            <br>
+            Exam grades work the same way: 80 or more is A, 70 or more but less than 80 is B, and so on. <br>
+            In this case the default is possibly the grade is F.</p>
+
+        <h3>Case Studies </h3>
+        <h4>1 — Campus Café</h4>
+        <div class="grid">
+            <div class="card">
+                <h3>Problem description</h3>
+                <p>Delivery fee: 200 birr or more is free, otherwise 100 birr or more is half price, otherwise full
+                    price.</p>
+            </div>
+            <div>
+                <div class="lab"><b>Pseudocode</b></div>
+                <pre>if order &gt;= 200 then
+    free delivery
+else if order &gt;= 100 then
+    half-price delivery
+else
+    full delivery fee</pre>
+            </div>
+        </div>
+        <div class="lab" style="margin-top: 3%;"><b>Flowchart</b></div>
+        <div class="fcw"><svg class="fc" viewBox="112.4 -2 446.6 459" width="446.6" role="img"
+                aria-label="Flowchart: else-if ladder, delivery fee" xmlns="http://www.w3.org/2000/svg">
+                <g fill="none" stroke="var(--ac,#1f5f8b)" stroke-width="2" stroke-linejoin="round">
+                    <polyline points="200,48 200,79" />
+                    <polyline points="273.6,115 349.6,115" />
+                    <polyline points="200,151 200,194" />
+                    <polyline points="273.6,230 326.8,230" />
+                    <polyline points="200,266 200,330 334.4,330" />
+                    <polyline points="480.4,115 545,115 545,425 463,425" />
+                    <polyline points="503.2,230 545,230 545,425 463,425" />
+                    <polyline points="495.6,330 545,330 545,425 463,425" />
+                </g>
+                <g fill="var(--ac,#1f5f8b)">
+                    <polygon points="200,79 195,70 205,70" />
+                    <polygon points="349.6,115 340.6,120 340.6,110" />
+                    <polygon points="200,194 195,185 205,185" />
+                    <polygon points="326.8,230 317.8,235 317.8,225" />
+                    <polygon points="334.4,330 325.4,335 325.4,325" />
+                    <polygon points="463,425 472,420 472,430" />
+                    <polygon points="463,425 472,420 472,430" />
+                    <polygon points="463,425 472,420 472,430" />
+                </g>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="152" y="12" width="96"
+                    height="36" rx="18" /><text x="200" y="31" text-anchor="middle" dominant-baseline="central"
+                    font-size="14" font-family="system-ui,sans-serif" fill="var(--fg,#1d2433)">Start</text>
+                <polygon fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2"
+                    points="200,79 273.6,115 200,151 126.4,115" /><text x="200" y="116" text-anchor="middle"
+                    dominant-baseline="central" font-size="14" font-family="system-ui,sans-serif"
+                    fill="var(--fg,#1d2433)">Order ≥ 200?</text>
+                <polygon fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2"
+                    points="200,194 273.6,230 200,266 126.4,230" /><text x="200" y="231" text-anchor="middle"
+                    dominant-baseline="central" font-size="14" font-family="system-ui,sans-serif"
+                    fill="var(--fg,#1d2433)">Order ≥ 100?</text>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="349.6" y="95" width="130.8"
+                    height="40" rx="4" /><text x="415" y="116" text-anchor="middle" dominant-baseline="central"
+                    font-size="14" font-family="system-ui,sans-serif" fill="var(--fg,#1d2433)">Free delivery</text>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="326.8" y="210"
+                    width="176.4" height="40" rx="4" /><text x="415" y="231" text-anchor="middle"
+                    dominant-baseline="central" font-size="14" font-family="system-ui,sans-serif"
+                    fill="var(--fg,#1d2433)">Half-price delivery</text>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="334.4" y="310"
+                    width="161.2" height="40" rx="4" /><text x="415" y="331" text-anchor="middle"
+                    dominant-baseline="central" font-size="14" font-family="system-ui,sans-serif"
+                    fill="var(--fg,#1d2433)">Full delivery fee</text>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="367" y="407" width="96"
+                    height="36" rx="18" /><text x="415" y="426" text-anchor="middle" dominant-baseline="central"
+                    font-size="14" font-family="system-ui,sans-serif" fill="var(--fg,#1d2433)">End</text><text x="298"
+                    y="103" text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="700"
+                    font-family="system-ui,sans-serif" fill="var(--ac,#1f5f8b)"
+                    style="paint-order:stroke;stroke:var(--bg,#fafaf7);stroke-width:4px">Yes</text><text x="215" y="170"
+                    text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="700"
+                    font-family="system-ui,sans-serif" fill="var(--ac,#1f5f8b)"
+                    style="paint-order:stroke;stroke:var(--bg,#fafaf7);stroke-width:4px">No</text><text x="298" y="218"
+                    text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="700"
+                    font-family="system-ui,sans-serif" fill="var(--ac,#1f5f8b)"
+                    style="paint-order:stroke;stroke:var(--bg,#fafaf7);stroke-width:4px">Yes</text><text x="215" y="285"
+                    text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="700"
+                    font-family="system-ui,sans-serif" fill="var(--ac,#1f5f8b)"
+                    style="paint-order:stroke;stroke:var(--bg,#fafaf7);stroke-width:4px">No</text>
+            </svg></div>
+        <h4>2 — City Bus Terminal</h4>
+        <div class="grid">
+            <div class="card">
+                <h3>Problem description</h3>
+                <p>Under 5 rides free, under 12 pays half, 60 or over pays half, everyone else pays full fare.</p>
+                <p class="mu" style="color:var(--mu)">Everyday echo: a ticket office with price groups</p>
+            </div>
+            <div>
+                <div class="lab"><b>Pseudocode</b></div>
+                <pre>if age &lt; 5 then
+    free ticket
+else if age &lt; 12 then
+    half fare
+else if age &gt;= 60 then
+    half fare
+else
+    full fare</pre>
+            </div>
+        </div>
+        <div class="lab" style="margin-top: 3%;"><b>Flowchart</b></div>
+        <div class="fcw"><svg class="fc" viewBox="123.8 -2 410.2 564" width="410.2" role="img"
+                aria-label="Flowchart: else-if ladder, fare by age" xmlns="http://www.w3.org/2000/svg">
+                <g fill="none" stroke="var(--ac,#1f5f8b)" stroke-width="2" stroke-linejoin="round">
+                    <polyline points="200,48 200,79" />
+                    <polyline points="260,115 355,115" />
+                    <polyline points="200,151 200,194" />
+                    <polyline points="262.2,230 355,230" />
+                    <polyline points="200,266 200,309" />
+                    <polyline points="262.2,345 355,345" />
+                    <polyline points="200,381 200,440 355,440" />
+                    <polyline points="475,115 520,115 520,530 463,530" />
+                    <polyline points="475,230 520,230 520,530 463,530" />
+                    <polyline points="475,345 520,345 520,530 463,530" />
+                    <polyline points="475,440 520,440 520,530 463,530" />
+                </g>
+                <g fill="var(--ac,#1f5f8b)">
+                    <polygon points="200,79 195,70 205,70" />
+                    <polygon points="355,115 346,120 346,110" />
+                    <polygon points="200,194 195,185 205,185" />
+                    <polygon points="355,230 346,235 346,225" />
+                    <polygon points="200,309 195,300 205,300" />
+                    <polygon points="355,345 346,350 346,340" />
+                    <polygon points="355,440 346,445 346,435" />
+                    <polygon points="463,530 472,525 472,535" />
+                    <polygon points="463,530 472,525 472,535" />
+                    <polygon points="463,530 472,525 472,535" />
+                    <polygon points="463,530 472,525 472,535" />
+                </g>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="152" y="12" width="96"
+                    height="36" rx="18" /><text x="200" y="31" text-anchor="middle" dominant-baseline="central"
+                    font-size="14" font-family="system-ui,sans-serif" fill="var(--fg,#1d2433)">Start</text>
+                <polygon fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2"
+                    points="200,79 260,115 200,151 140,115" /><text x="200" y="116" text-anchor="middle"
+                    dominant-baseline="central" font-size="14" font-family="system-ui,sans-serif"
+                    fill="var(--fg,#1d2433)">Age &lt; 5?</text>
+                <polygon fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2"
+                    points="200,194 262.2,230 200,266 137.8,230" /><text x="200" y="231" text-anchor="middle"
+                    dominant-baseline="central" font-size="14" font-family="system-ui,sans-serif"
+                    fill="var(--fg,#1d2433)">Age &lt; 12?</text>
+                <polygon fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2"
+                    points="200,309 262.2,345 200,381 137.8,345" /><text x="200" y="346" text-anchor="middle"
+                    dominant-baseline="central" font-size="14" font-family="system-ui,sans-serif"
+                    fill="var(--fg,#1d2433)">Age ≥ 60?</text>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="355" y="95" width="120"
+                    height="40" rx="4" /><text x="415" y="116" text-anchor="middle" dominant-baseline="central"
+                    font-size="14" font-family="system-ui,sans-serif" fill="var(--fg,#1d2433)">Free ticket</text>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="355" y="210" width="120"
+                    height="40" rx="4" /><text x="415" y="231" text-anchor="middle" dominant-baseline="central"
+                    font-size="14" font-family="system-ui,sans-serif" fill="var(--fg,#1d2433)">Half fare</text>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="355" y="325" width="120"
+                    height="40" rx="4" /><text x="415" y="346" text-anchor="middle" dominant-baseline="central"
+                    font-size="14" font-family="system-ui,sans-serif" fill="var(--fg,#1d2433)">Half fare</text>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="355" y="420" width="120"
+                    height="40" rx="4" /><text x="415" y="441" text-anchor="middle" dominant-baseline="central"
+                    font-size="14" font-family="system-ui,sans-serif" fill="var(--fg,#1d2433)">Full fare</text>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="367" y="512" width="96"
+                    height="36" rx="18" /><text x="415" y="531" text-anchor="middle" dominant-baseline="central"
+                    font-size="14" font-family="system-ui,sans-serif" fill="var(--fg,#1d2433)">End</text><text x="310"
+                    y="103" text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="700"
+                    font-family="system-ui,sans-serif" fill="var(--ac,#1f5f8b)"
+                    style="paint-order:stroke;stroke:var(--bg,#fafaf7);stroke-width:4px">Yes</text><text x="215" y="170"
+                    text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="700"
+                    font-family="system-ui,sans-serif" fill="var(--ac,#1f5f8b)"
+                    style="paint-order:stroke;stroke:var(--bg,#fafaf7);stroke-width:4px">No</text><text x="310" y="218"
+                    text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="700"
+                    font-family="system-ui,sans-serif" fill="var(--ac,#1f5f8b)"
+                    style="paint-order:stroke;stroke:var(--bg,#fafaf7);stroke-width:4px">Yes</text><text x="215" y="285"
+                    text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="700"
+                    font-family="system-ui,sans-serif" fill="var(--ac,#1f5f8b)"
+                    style="paint-order:stroke;stroke:var(--bg,#fafaf7);stroke-width:4px">No</text><text x="310" y="333"
+                    text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="700"
+                    font-family="system-ui,sans-serif" fill="var(--ac,#1f5f8b)"
+                    style="paint-order:stroke;stroke:var(--bg,#fafaf7);stroke-width:4px">Yes</text><text x="215" y="395"
+                    text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="700"
+                    font-family="system-ui,sans-serif" fill="var(--ac,#1f5f8b)"
+                    style="paint-order:stroke;stroke:var(--bg,#fafaf7);stroke-width:4px">No</text>
+            </svg></div>
+
+        <h3>Example: Complete Code</h3>
+        <p class="rem" style="color:var(--mu)">This program codes the Campus Café scenario above. Compile it, run it,
+            and compare with the sample run.</p>
+        <pre>#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+using namespace std;
+
+int main() {
+    const double FULL_FEE = 20.0;
+    double order, fee;
+
+    cout &lt;&lt; "Enter the order amount: ";
+    cin &gt;&gt; order;
+
+    if (order &gt;= 200) {
+        fee = 0;
+    } else if (order &gt;= 100) {
+        fee = FULL_FEE / 2;
+    } else {
+        fee = FULL_FEE;
+    }
+
+    cout &lt;&lt; fixed &lt;&lt; setprecision(2);
+    cout &lt;&lt; "Delivery fee: " &lt;&lt; fee &lt;&lt; " birr" &lt;&lt; endl;
+    return 0;
+}</pre>
+        <div class="lab">Sample run</div>
+        <pre>Enter the order amount: 150
+Delivery fee: 10.00 birr</pre>
+        <h3>Comparison with an earlier construct</h3>
+        <p>An else-if ladder is actually the <b>same construct</b> as nested if-else, just written differently:</p>
+        <div class="tw">
+            <table>
+                <tr>
+                    <th></th>
+                    <th>Nested if-else (general)</th>
+                    <th>else-if ladder</th>
+                </tr>
+                <tr>
+                    <td>Can test</td>
+                    <td>completely unrelated conditions at each level</td>
+                    <td>a sequence of parallel alternatives of the same kind (grade bands, menu ranges)</td>
+                </tr>
+                <tr>
+                    <td>Layout</td>
+                    <td>nesting indented to the right at each level</td>
+                    <td>written flat, lined up, for readability</td>
+                </tr>
+                <tr>
+                    <td>Compiler sees</td>
+                    <td>identical structure either way</td>
+                    <td>identical structure either way</td>
+                </tr>
+            </table>
+        </div>
+
+        <h2 id="switch">3.3.4. The switch statement</h2>
+        The <b>switch statement</b> is similar to <code>if...else ladder</code>, it enables you to test several cases generated by a given expression. 
+        But it is more specialized because:
+
+        <ul>
+            <li> it tests one expression against several exact <b>constant</b> values.</li>
+            <li> unlike <code>else if</code>ladder, here the condition have the form <b>(var == const)</b>, 
+                where <i>var</i> is a variable and <i>const</i> is a literal constant.  </li>
+            <li>the switch tag must produce a value of type <code>char</code>, <code>short</code>, <code>int</code>, or <code>bool</code> result — never
+                <code>float</code>, <code>double</code>, or <code>long</code>.</li>
+        </ul>
+        <p>
+            The switch statement has four components: <b><i>Switch, Case, Default, Break</i></b>, where Default and Break are Optional bur recommended. 
+        </p>
+        <h3>(i) Syntax</h3>
+        <pre>
+switch (expression){
+    case constant1:
+        statements1;
+        break;
+    case constant2:
+        statements2;
+        break;
+    .
+    .
+    .
+    default:
+        default_statements;
+}</pre>
+        <div class="lab">What each part means</div>
+        <ul>
+            <li><code>expression results in a value that </code> (the switch tag) is compared against each <code>case</code> 
+                that specify <b>constant value</b>, in order from top to down, until a match is found.</li>
+            <li>When match found, execution runs from that <code>case</code> <b>until a break is reached</b>, or the switch ends.</li>
+            <li>Without <code>break</code> statement, the execution <b>falls through</b> into the next case — sometimes a bug,
+                sometimes used deliberately to share one action between several cases.</li>
+            <li><code>default</code> runs when nothing matches. It is optional, as is break on the very last case — but
+                omitting break elsewhere is usually a mistake.</li>
+        </ul>
+        <div class="tip"><b>In one sentence</b>Compare one value against a list of exact choices (literal constants).</div>
+        
+        <h3>(i) Everyday analogy</h3>
+        <p class="card">A vending machine or a lift: press 1 for the first floor, 2 for the second, and so on. The machine
+            reads <b>one value</b> and goes to the matching button. A button that is not on the panel does
+            nothing.</p>
+
+        <h3>(iii) Case Studies</h3>
+        <h4>1 — Campus Café</h4>
+        <div class="grid">
+            <div class="card">
+                <h3>Problem description</h3>
+                <p>The menu board: <br>1 - tea, 2 - coffee, 3 - juice, 4 - water. <br>Any other number: “Not on the menu”.</p>
+            </div>
+            <div>
+                <div class="lab"><b>Pseudocode</b></div>
+                <pre>read menu number
+switch on the number
+    case 1: serve tea, stop
+    case 2: serve coffee, stop
+    case 3: serve juice, stop
+    case 4: serve water, stop
+    default: say "not on the menu"</pre>
+            </div>
+        </div>
+
+        <div class="lab" style="margin-top: 3%;"><b>Flowchart</b></div>
+        <div class="fcw">
+            <svg class="fc" viewBox="58.6 -4 475.4 416" width="475.4" role="img"
+                aria-label="Flowchart: switch, menu number" xmlns="http://www.w3.org/2000/svg">
+                <g fill="none" stroke="var(--ac,#1f5f8b)" stroke-width="2" stroke-linejoin="round">
+                    <polyline points="150,50 150,104" />
+                    <polyline points="227.4,140 265,140 265,60 330,60" />
+                    <polyline points="450,60 520,60 520,380 456.4,380" />
+                    <polyline points="227.4,140 265,140 265,120 328.4,120" />
+                    <polyline points="451.6,120 520,120 520,380 456.4,380" />
+                    <polyline points="227.4,140 265,140 265,180 330,180" />
+                    <polyline points="450,180 520,180 520,380 456.4,380" />
+                    <polyline points="227.4,140 265,140 265,240 330,240" />
+                    <polyline points="450,240 520,240 520,380 456.4,380" />
+                    <polyline points="227.4,140 265,140 265,300 317,300" />
+                    <polyline points="463,300 520,300 520,380 456.4,380" />
+                </g>
+                <g fill="var(--ac,#1f5f8b)">
+                    <polygon points="150,104 145,95 155,95" />
+                    <polygon points="330,60 321,65 321,55" />
+                    <polygon points="456.4,380 465.4,375 465.4,385" />
+                    <polygon points="328.4,120 319.4,125 319.4,115" />
+                    <polygon points="456.4,380 465.4,375 465.4,385" />
+                    <polygon points="330,180 321,185 321,175" />
+                    <polygon points="456.4,380 465.4,375 465.4,385" />
+                    <polygon points="330,240 321,245 321,235" />
+                    <polygon points="456.4,380 465.4,375 465.4,385" />
+                    <polygon points="317,300 308,305 308,295" />
+                    <polygon points="456.4,380 465.4,375 465.4,385" />
+                </g>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="73.2" y="10" width="153.6"
+                    height="40" rx="4" /><text x="150" y="31" text-anchor="middle" dominant-baseline="central"
+                    font-size="14" font-family="system-ui,sans-serif" fill="var(--fg,#1d2433)">Read menu number</text>
+                <polygon fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2"
+                    points="150,104 227.4,140 150,176 72.6,140" /><text x="150" y="141" text-anchor="middle"
+                    dominant-baseline="central" font-size="14" font-family="system-ui,sans-serif"
+                    fill="var(--fg,#1d2433)">Which number?</text>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="330" y="40" width="120"
+                    height="40" rx="4" /><text x="390" y="61" text-anchor="middle" dominant-baseline="central"
+                    font-size="14" font-family="system-ui,sans-serif" fill="var(--fg,#1d2433)">Serve tea</text>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="328.4" y="100"
+                    width="123.2" height="40" rx="4" /><text x="390" y="121" text-anchor="middle"
+                    dominant-baseline="central" font-size="14" font-family="system-ui,sans-serif"
+                    fill="var(--fg,#1d2433)">Serve coffee</text>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="330" y="160" width="120"
+                    height="40" rx="4" /><text x="390" y="181" text-anchor="middle" dominant-baseline="central"
+                    font-size="14" font-family="system-ui,sans-serif" fill="var(--fg,#1d2433)">Serve juice</text>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="330" y="220" width="120"
+                    height="40" rx="4" /><text x="390" y="241" text-anchor="middle" dominant-baseline="central"
+                    font-size="14" font-family="system-ui,sans-serif" fill="var(--fg,#1d2433)">Serve water</text>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="317" y="280" width="146"
+                    height="40" rx="4" /><text x="390" y="301" text-anchor="middle" dominant-baseline="central"
+                    font-size="14" font-family="system-ui,sans-serif" fill="var(--fg,#1d2433)">Not on the menu</text>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="323.6" y="362"
+                    width="132.8" height="36" rx="18" /><text x="390" y="381" text-anchor="middle"
+                    dominant-baseline="central" font-size="14" font-family="system-ui,sans-serif"
+                    fill="var(--fg,#1d2433)">Next customer</text><text x="292" y="48" text-anchor="middle"
+                    dominant-baseline="central" font-size="12" font-weight="700" font-family="system-ui,sans-serif"
+                    fill="var(--ac,#1f5f8b)"
+                    style="paint-order:stroke;stroke:var(--bg,#fafaf7);stroke-width:4px">1</text><text x="292" y="108"
+                    text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="700"
+                    font-family="system-ui,sans-serif" fill="var(--ac,#1f5f8b)"
+                    style="paint-order:stroke;stroke:var(--bg,#fafaf7);stroke-width:4px">2</text><text x="292" y="168"
+                    text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="700"
+                    font-family="system-ui,sans-serif" fill="var(--ac,#1f5f8b)"
+                    style="paint-order:stroke;stroke:var(--bg,#fafaf7);stroke-width:4px">3</text><text x="292" y="228"
+                    text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="700"
+                    font-family="system-ui,sans-serif" fill="var(--ac,#1f5f8b)"
+                    style="paint-order:stroke;stroke:var(--bg,#fafaf7);stroke-width:4px">4</text><text x="292" y="288"
+                    text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="700"
+                    font-family="system-ui,sans-serif" fill="var(--ac,#1f5f8b)"
+                    style="paint-order:stroke;stroke:var(--bg,#fafaf7);stroke-width:4px">other</text>
+            </svg></div>
+        <h4>2 — City Bus Terminal</h4>
+        <div class="grid">
+            <div class="card">
+                <h3>Problem description</h3>
+                <p>Code 1 is Adama, 2 is Bahir Dar, 3 is Hawassa, 4 is Dire Dawa. Any other code is invalid.</p>
+                <p class="mu" style="color:var(--mu)">Everyday echo: lift buttons: one value, matching buttons</p>
+            </div>
+            <div>
+                <div class="lab"><b>Pseudocode</b></div>
+                <pre>read destination code
+switch on the code
+    case 1: Adama fare, stop
+    case 2: Bahir Dar fare, stop
+    case 3: Hawassa fare, stop
+    case 4: Dire Dawa fare, stop
+    default: invalid code</pre>
+            </div>
+        </div>
+
+        <div class="lab" style="margin-top: 3%;"><b>Flowchart</b></div>
+        <div class="fcw"><svg class="fc" viewBox="40.2 -4 473.8 416" width="473.8" role="img"
+                aria-label="Flowchart: switch, destination code" xmlns="http://www.w3.org/2000/svg">
+                <g fill="none" stroke="var(--ac,#1f5f8b)" stroke-width="2" stroke-linejoin="round">
+                    <polyline points="150,50 150,104" />
+                    <polyline points="219.8,140 255,140 255,60 330,60" />
+                    <polyline points="450,60 500,60 500,380 460.2,380" />
+                    <polyline points="219.8,140 255,140 255,120 330,120" />
+                    <polyline points="450,120 500,120 500,380 460.2,380" />
+                    <polyline points="219.8,140 255,140 255,180 330,180" />
+                    <polyline points="450,180 500,180 500,380 460.2,380" />
+                    <polyline points="219.8,140 255,140 255,240 330,240" />
+                    <polyline points="450,240 500,240 500,380 460.2,380" />
+                    <polyline points="219.8,140 255,140 255,300 328.4,300" />
+                    <polyline points="451.6,300 500,300 500,380 460.2,380" />
+                </g>
+                <g fill="var(--ac,#1f5f8b)">
+                    <polygon points="150,104 145,95 155,95" />
+                    <polygon points="330,60 321,65 321,55" />
+                    <polygon points="460.2,380 469.2,375 469.2,385" />
+                    <polygon points="330,120 321,125 321,115" />
+                    <polygon points="460.2,380 469.2,375 469.2,385" />
+                    <polygon points="330,180 321,185 321,175" />
+                    <polygon points="460.2,380 469.2,375 469.2,385" />
+                    <polygon points="330,240 321,245 321,235" />
+                    <polygon points="460.2,380 469.2,375 469.2,385" />
+                    <polygon points="328.4,300 319.4,305 319.4,295" />
+                    <polygon points="460.2,380 469.2,375 469.2,385" />
+                </g>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="54.2" y="10" width="191.6"
+                    height="40" rx="4" /><text x="150" y="31" text-anchor="middle" dominant-baseline="central"
+                    font-size="14" font-family="system-ui,sans-serif" fill="var(--fg,#1d2433)">Read destination
+                    code</text>
+                <polygon fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2"
+                    points="150,104 219.8,140 150,176 80.2,140" /><text x="150" y="141" text-anchor="middle"
+                    dominant-baseline="central" font-size="14" font-family="system-ui,sans-serif"
+                    fill="var(--fg,#1d2433)">Which code?</text>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="330" y="40" width="120"
+                    height="40" rx="4" /><text x="390" y="61" text-anchor="middle" dominant-baseline="central"
+                    font-size="14" font-family="system-ui,sans-serif" fill="var(--fg,#1d2433)">Adama</text>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="330" y="100" width="120"
+                    height="40" rx="4" /><text x="390" y="121" text-anchor="middle" dominant-baseline="central"
+                    font-size="14" font-family="system-ui,sans-serif" fill="var(--fg,#1d2433)">Bahir Dar</text>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="330" y="160" width="120"
+                    height="40" rx="4" /><text x="390" y="181" text-anchor="middle" dominant-baseline="central"
+                    font-size="14" font-family="system-ui,sans-serif" fill="var(--fg,#1d2433)">Hawassa</text>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="330" y="220" width="120"
+                    height="40" rx="4" /><text x="390" y="241" text-anchor="middle" dominant-baseline="central"
+                    font-size="14" font-family="system-ui,sans-serif" fill="var(--fg,#1d2433)">Dire Dawa</text>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="328.4" y="280"
+                    width="123.2" height="40" rx="4" /><text x="390" y="301" text-anchor="middle"
+                    dominant-baseline="central" font-size="14" font-family="system-ui,sans-serif"
+                    fill="var(--fg,#1d2433)">Invalid code</text>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="319.8" y="362"
+                    width="140.4" height="36" rx="18" /><text x="390" y="381" text-anchor="middle"
+                    dominant-baseline="central" font-size="14" font-family="system-ui,sans-serif"
+                    fill="var(--fg,#1d2433)">Print the fare</text><text x="300" y="48" text-anchor="middle"
+                    dominant-baseline="central" font-size="12" font-weight="700" font-family="system-ui,sans-serif"
+                    fill="var(--ac,#1f5f8b)"
+                    style="paint-order:stroke;stroke:var(--bg,#fafaf7);stroke-width:4px">1</text><text x="300" y="108"
+                    text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="700"
+                    font-family="system-ui,sans-serif" fill="var(--ac,#1f5f8b)"
+                    style="paint-order:stroke;stroke:var(--bg,#fafaf7);stroke-width:4px">2</text><text x="300" y="168"
+                    text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="700"
+                    font-family="system-ui,sans-serif" fill="var(--ac,#1f5f8b)"
+                    style="paint-order:stroke;stroke:var(--bg,#fafaf7);stroke-width:4px">3</text><text x="300" y="228"
+                    text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="700"
+                    font-family="system-ui,sans-serif" fill="var(--ac,#1f5f8b)"
+                    style="paint-order:stroke;stroke:var(--bg,#fafaf7);stroke-width:4px">4</text><text x="300" y="288"
+                    text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="700"
+                    font-family="system-ui,sans-serif" fill="var(--ac,#1f5f8b)"
+                    style="paint-order:stroke;stroke:var(--bg,#fafaf7);stroke-width:4px">other</text>
+            </svg></div>
+
+        <h3>Example: Complete Code</h3>
+        <p class="rem" style="color:var(--mu)">This program codes the Campus Café scenario above. Compile it, run it,
+            and compare with the sample run.</p>
+        <pre>#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int choice;
+    cout &lt;&lt; "Menu: 1 Tea, 2 Coffee, 3 Juice, 4 Water" &lt;&lt; endl;
+    cout &lt;&lt; "Enter your choice: ";
+    cin &gt;&gt; choice;
+
+    switch (choice) {
+        case 1: cout &lt;&lt; "Serving Tea" &lt;&lt; endl;    break;
+        case 2: cout &lt;&lt; "Serving Coffee" &lt;&lt; endl; break;
+        case 3: cout &lt;&lt; "Serving Juice" &lt;&lt; endl;  break;
+        case 4: cout &lt;&lt; "Serving Water" &lt;&lt; endl;  break;
+        default: cout &lt;&lt; "Not on the menu." &lt;&lt; endl;
+    }
+    return 0;
+}</pre>
+        <div class="lab">Sample run</div>
+        <pre>Menu: 1 Tea, 2 Coffee, 3 Juice, 4 Water
+Enter your choice: 2
+Serving Coffee</pre>
+        <h3>Comparison with an earlier construct</h3>
+        <p>Compared with the else-if ladder just discussed:</p>
+        <div class="tw">
+            <table>
+                <tr>
+                    <th></th>
+                    <th>else-if ladder</th>
+                    <th>switch</th>
+                </tr>
+                <tr>
+                    <td>Compares</td>
+                    <td>any boolean condition (ranges, combinations)</td>
+                    <td>one expression against exact constant values</td>
+                </tr>
+                <tr>
+                    <td>Good for</td>
+                    <td>age bands, mark ranges, compound conditions</td>
+                    <td>menu choices, single-character codes, day numbers</td>
+                </tr>
+                <tr>
+                    <td>Cannot do</td>
+                    <td>—</td>
+                    <td>ranges (<code>case 1...5</code> is illegal) or non-constant cases</td>
+                </tr>
+            </table>
+        </div>
+        <h3>Fall-through, by example</h3>
+        <pre>switch (operatorChar) {
+    case '+': result = a + b; break;
+    case '-': result = a - b; break;
+    case 'x':
+    case 'X':
+    case '*': result = a * b; break;      // 'x', 'X' and '*' all multiply — deliberate fall-through
+    case '/': result = a / b; break;
+    default:  cout &lt;&lt; "unknown operator" &lt;&lt; endl;
+}</pre>
+
+        <h2 id="loopintro">3.4 Looping</h2>
+        <p>A loop repeats a block of statements. There are two ways to know when a loop has repeated enough:</p>
+        <div class="grid">
+            <div class="card">
+                <h3>Count-controlled</h3>You know in advance exactly how many repeats are needed. Needs: an
+                <b>initialization</b> of a counter, a <b>test</b> of the counter, and an <b>update</b> of the counter
+                each pass.
+            </div>
+            <div class="card">
+                <h3>Event- (condition-) controlled</h3>Repeats until something happens inside the loop. Three common
+                kinds:<ul>
+                    <li><b>Sentinel-controlled:</b> stop when a special value (not a valid data value) is entered.</li>
+                    <li><b>End-of-file controlled:</b> stop when there is no more data to read.</li>
+                    <li><b>Flag-controlled:</b> stop when a boolean flag changes inside the loop.</li>
+                </ul>
+            </div>
+        </div>
+        <p>C++ provides three loop statements: <code>for</code>, <code>while</code>, and <code>do-while</code>.</p>
+        <h2 id="for">1) The for loop</h2>
+        
+        <ul>
+            <li>Best suited to count-controlled loops: it has dedicated places for the counter’s start, test, and
+                update.</li>
+        </ul>
+        <h3>Syntax</h3>
+        <pre>for (initialization; condition; update)
+{
+    statement(s);
+}</pre>
+        <div class="lab">What each part means</div>
+        <ul>
+            <li><code>initialization</code> runs once, before the loop starts (usually declares and sets a counter).
+            </li>
+            <li><code>condition</code> is checked <b>before</b> every pass. True → run the body; false → the loop ends.
+            </li>
+            <li><code>update</code> runs at the <b>end</b> of every pass, then control returns to the condition.</li>
+            <li>Any part may be left empty (but the two semicolons are always required); <code>for (;;)</code> is a
+                deliberately infinite loop.</li>
+        </ul>
+        <div class="tip"><b>In one sentence</b>Repeat a known number of times, with the counter built in.</div>
+        <h3>Everyday analogy</h3>
+        <p>Climbing 10 stairs, or running 4 laps of a track. You know the count in advance and you count as you
+            go.</p>
+        <h3>Case study 1 — Campus Café</h3>
+        <div class="grid">
+            <div class="card">
+                <h3>Problem description</h3>
+                <p>Prepare exactly 12 cups for the class order.</p>
+            </div>
+            <div>
+                <div class="lab"><b>Pseudocode</b></div>
+                <pre>for cup from 1 to 12
+    prepare cup</pre>
+            </div>
+        </div>
+        <div class="fcw"><svg class="fc" viewBox="16 -4 308 421" width="308" role="img"
+                aria-label="Flowchart: for loop, prepare 12 cups" xmlns="http://www.w3.org/2000/svg">
+                <g fill="none" stroke="var(--ac,#1f5f8b)" stroke-width="2" stroke-linejoin="round">
+                    <polyline points="160,50 160,79" />
+                    <polyline points="160,151 160,195" />
+                    <polyline points="160,235 160,275" />
+                    <polyline points="225.4,295 310,295 310,115 222.2,115" />
+                    <polyline points="97.8,115 30,115 30,385 112,385" />
+                </g>
+                <g fill="var(--ac,#1f5f8b)">
+                    <polygon points="160,79 155,70 165,70" />
+                    <polygon points="160,195 155,186 165,186" />
+                    <polygon points="160,275 155,266 165,266" />
+                    <polygon points="222.2,115 231.2,110 231.2,120" />
+                    <polygon points="112,385 103,390 103,380" />
+                </g>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="100" y="10" width="120"
+                    height="40" rx="4" /><text x="160" y="31" text-anchor="middle" dominant-baseline="central"
+                    font-size="14" font-family="system-ui,sans-serif" fill="var(--fg,#1d2433)">cup = 1</text>
+                <polygon fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2"
+                    points="160,79 222.2,115 160,151 97.8,115" /><text x="160" y="116" text-anchor="middle"
+                    dominant-baseline="central" font-size="14" font-family="system-ui,sans-serif"
+                    fill="var(--fg,#1d2433)">cup ≤ 12?</text>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="100" y="195" width="120"
+                    height="40" rx="4" /><text x="160" y="216" text-anchor="middle" dominant-baseline="central"
+                    font-size="14" font-family="system-ui,sans-serif" fill="var(--fg,#1d2433)">Prepare cup</text>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="94.6" y="275" width="130.8"
+                    height="40" rx="4" /><text x="160" y="296" text-anchor="middle" dominant-baseline="central"
+                    font-size="14" font-family="system-ui,sans-serif" fill="var(--fg,#1d2433)">cup = cup + 1</text>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="112" y="367" width="96"
+                    height="36" rx="18" /><text x="160" y="386" text-anchor="middle" dominant-baseline="central"
+                    font-size="14" font-family="system-ui,sans-serif" fill="var(--fg,#1d2433)">All done</text><text
+                    x="180" y="163" text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="700"
+                    font-family="system-ui,sans-serif" fill="var(--ac,#1f5f8b)"
+                    style="paint-order:stroke;stroke:var(--bg,#fafaf7);stroke-width:4px">Yes</text><text x="60" y="103"
+                    text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="700"
+                    font-family="system-ui,sans-serif" fill="var(--ac,#1f5f8b)"
+                    style="paint-order:stroke;stroke:var(--bg,#fafaf7);stroke-width:4px">No</text>
+            </svg></div>
+        <h3>Case study 2 — City Bus Terminal</h3>
+        <div class="grid">
+            <div class="card">
+                <h3>Problem description</h3>
+                <p>The driver checks all 6 tyres, one after another.</p>
+                <p class="mu" style="color:var(--mu)">Everyday echo: climbing 6 stairs: a known count</p>
+            </div>
+            <div>
+                <div class="lab"><b>Pseudocode</b></div>
+                <pre>for tyre from 1 to 6
+    check tyre</pre>
+            </div>
+        </div>
+        <div class="fcw"><svg class="fc" viewBox="16 -4 308 421" width="308" role="img"
+                aria-label="Flowchart: for loop, check 6 tyres" xmlns="http://www.w3.org/2000/svg">
+                <g fill="none" stroke="var(--ac,#1f5f8b)" stroke-width="2" stroke-linejoin="round">
+                    <polyline points="160,50 160,79" />
+                    <polyline points="160,151 160,195" />
+                    <polyline points="160,235 160,275" />
+                    <polyline points="233,295 310,295 310,115 222.2,115" />
+                    <polyline points="97.8,115 30,115 30,385 101.2,385" />
+                </g>
+                <g fill="var(--ac,#1f5f8b)">
+                    <polygon points="160,79 155,70 165,70" />
+                    <polygon points="160,195 155,186 165,186" />
+                    <polygon points="160,275 155,266 165,266" />
+                    <polygon points="222.2,115 231.2,110 231.2,120" />
+                    <polygon points="101.2,385 92.2,390 92.2,380" />
+                </g>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="100" y="10" width="120"
+                    height="40" rx="4" /><text x="160" y="31" text-anchor="middle" dominant-baseline="central"
+                    font-size="14" font-family="system-ui,sans-serif" fill="var(--fg,#1d2433)">tyre = 1</text>
+                <polygon fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2"
+                    points="160,79 222.2,115 160,151 97.8,115" /><text x="160" y="116" text-anchor="middle"
+                    dominant-baseline="central" font-size="14" font-family="system-ui,sans-serif"
+                    fill="var(--fg,#1d2433)">tyre ≤ 6?</text>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="100" y="195" width="120"
+                    height="40" rx="4" /><text x="160" y="216" text-anchor="middle" dominant-baseline="central"
+                    font-size="14" font-family="system-ui,sans-serif" fill="var(--fg,#1d2433)">Check tyre</text>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="87" y="275" width="146"
+                    height="40" rx="4" /><text x="160" y="296" text-anchor="middle" dominant-baseline="central"
+                    font-size="14" font-family="system-ui,sans-serif" fill="var(--fg,#1d2433)">tyre = tyre + 1</text>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="101.2" y="367"
+                    width="117.6" height="36" rx="18" /><text x="160" y="386" text-anchor="middle"
+                    dominant-baseline="central" font-size="14" font-family="system-ui,sans-serif"
+                    fill="var(--fg,#1d2433)">All checked</text><text x="180" y="163" text-anchor="middle"
+                    dominant-baseline="central" font-size="12" font-weight="700" font-family="system-ui,sans-serif"
+                    fill="var(--ac,#1f5f8b)"
+                    style="paint-order:stroke;stroke:var(--bg,#fafaf7);stroke-width:4px">Yes</text><text x="60" y="103"
+                    text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="700"
+                    font-family="system-ui,sans-serif" fill="var(--ac,#1f5f8b)"
+                    style="paint-order:stroke;stroke:var(--bg,#fafaf7);stroke-width:4px">No</text>
+            </svg></div>
+        <h3>Example: complete code</h3>
+        <p class="rem" style="color:var(--mu)">This program codes the Campus Café scenario above. Compile it, run it,
+            and compare with the sample run.</p>
+        <pre>#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int n;
+    cout &lt;&lt; "How many cups to prepare? ";
+    cin &gt;&gt; n;
+
+    for (int cup = 1; cup &lt;= n; cup++) {
+        cout &lt;&lt; "Cup " &lt;&lt; cup &lt;&lt; " ready" &lt;&lt; endl;
+    }
+    cout &lt;&lt; "All cups prepared." &lt;&lt; endl;
+    return 0;
+}</pre>
+        <div class="lab">Sample run</div>
+        <pre>How many cups to prepare? 4
+Cup 1 ready
+Cup 2 ready
+Cup 3 ready
+Cup 4 ready
+All cups prepared.</pre>
+        <h3>The comma operator in for</h3>
+        <p>You may pack more than one expression into the init or update part using the comma operator:</p>
+        <pre>for (int i = 0, j = 100; i != j; i++, j--)
+{
+    // runs 50 times: i counts up, j counts down, they meet at 50
+}</pre>
+        <h2 id="while">2) The while loop</h2>
+        
+        <ul>
+            <li>Repeats a statement <b>while</b> a condition holds.</li>
+            <li>The condition is tested <b>before</b> each pass (test-first), so the body may run <b>zero times</b>.
+            </li>
+        </ul>
+        <h3>Syntax</h3>
+        <pre>while (expression)
+{
+    statement(s);
+}</pre>
+        <div class="lab">What each part means</div>
+        <ul>
+            <li><code>expression</code> is checked before every pass. True → the body runs once more; false → the loop
+                ends immediately.</li>
+            <li>Nothing about a while loop is automatic — initializing and updating the variable the condition depends
+                on are both the programmer’s job.</li>
+            <li>If <code>expression</code> is false the very first time, the body never runs at all.</li>
+        </ul>
+        <div class="tip"><b>In one sentence</b>Repeat while a condition holds; the test comes first, so it may run zero
+            times.</div>
+        <h3>Everyday analogy</h3>
+        <p>Fill a bucket while it is not full. If the bucket is already full, you do not pour at all. The check
+            happens <b>before</b> each pour.</p>
+        <h3>Case study 1 — Campus Café</h3>
+        <div class="grid">
+            <div class="card">
+                <h3>Problem description</h3>
+                <p>Serve customers while the queue is not empty. If nobody is waiting, the loop runs zero times.</p>
+            </div>
+            <div>
+                <div class="lab"><b>Pseudocode</b></div>
+                <pre>while queue is not empty
+    serve next customer
+close the counter</pre>
+            </div>
+        </div>
+        <div class="fcw"><svg class="fc" viewBox="6 -2 338 346" width="338" role="img"
+                aria-label="Flowchart: while loop, serve the queue" xmlns="http://www.w3.org/2000/svg">
+                <g fill="none" stroke="var(--ac,#1f5f8b)" stroke-width="2" stroke-linejoin="round">
+                    <polyline points="160,48 160,79" />
+                    <polyline points="160,151 160,195" />
+                    <polyline points="248.2,215 330,215 330,115 248.8,115" />
+                    <polyline points="71.2,115 20,115 20,310 79.4,310" />
+                </g>
+                <g fill="var(--ac,#1f5f8b)">
+                    <polygon points="160,79 155,70 165,70" />
+                    <polygon points="160,195 155,186 165,186" />
+                    <polygon points="248.8,115 257.8,110 257.8,120" />
+                    <polygon points="79.4,310 70.4,315 70.4,305" />
+                </g>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="112" y="12" width="96"
+                    height="36" rx="18" /><text x="160" y="31" text-anchor="middle" dominant-baseline="central"
+                    font-size="14" font-family="system-ui,sans-serif" fill="var(--fg,#1d2433)">Start</text>
+                <polygon fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2"
+                    points="160,79 248.8,115 160,151 71.2,115" /><text x="160" y="116" text-anchor="middle"
+                    dominant-baseline="central" font-size="14" font-family="system-ui,sans-serif"
+                    fill="var(--fg,#1d2433)">Queue not empty?</text>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="71.8" y="195" width="176.4"
+                    height="40" rx="4" /><text x="160" y="216" text-anchor="middle" dominant-baseline="central"
+                    font-size="14" font-family="system-ui,sans-serif" fill="var(--fg,#1d2433)">Serve next
+                    customer</text>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="79.4" y="290" width="161.2"
+                    height="40" rx="4" /><text x="160" y="311" text-anchor="middle" dominant-baseline="central"
+                    font-size="14" font-family="system-ui,sans-serif" fill="var(--fg,#1d2433)">Close the
+                    counter</text><text x="182" y="163" text-anchor="middle" dominant-baseline="central" font-size="12"
+                    font-weight="700" font-family="system-ui,sans-serif" fill="var(--ac,#1f5f8b)"
+                    style="paint-order:stroke;stroke:var(--bg,#fafaf7);stroke-width:4px">Yes</text><text x="46" y="103"
+                    text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="700"
+                    font-family="system-ui,sans-serif" fill="var(--ac,#1f5f8b)"
+                    style="paint-order:stroke;stroke:var(--bg,#fafaf7);stroke-width:4px">No</text>
+            </svg></div>
+        <h3>Case study 2 — City Bus Terminal</h3>
+        <div class="grid">
+            <div class="card">
+                <h3>Problem description</h3>
+                <p>Board passengers while seats are left <b>and</b> someone is waiting. Each boarding uses one seat.</p>
+                <p class="mu" style="color:var(--mu)">Everyday echo: filling a bucket until it is full</p>
+            </div>
+            <div>
+                <div class="lab"><b>Pseudocode</b></div>
+                <pre>while seats &gt; 0 and queue not empty
+    board next passenger
+    seats = seats - 1
+close the door</pre>
+            </div>
+        </div>
+        <div class="fcw"><svg class="fc" viewBox="6 -2 368 411" width="368" role="img"
+                aria-label="Flowchart: while loop, board passengers" xmlns="http://www.w3.org/2000/svg">
+                <g fill="none" stroke="var(--ac,#1f5f8b)" stroke-width="2" stroke-linejoin="round">
+                    <polyline points="180,48 180,79" />
+                    <polyline points="180,151 180,190" />
+                    <polyline points="180,230 180,265" />
+                    <polyline points="260.6,285 360,285 360,115 287.8,115" />
+                    <polyline points="72.2,115 20,115 20,375 110.8,375" />
+                </g>
+                <g fill="var(--ac,#1f5f8b)">
+                    <polygon points="180,79 175,70 185,70" />
+                    <polygon points="180,190 175,181 185,181" />
+                    <polygon points="180,265 175,256 185,256" />
+                    <polygon points="287.8,115 296.8,110 296.8,120" />
+                    <polygon points="110.8,375 101.8,380 101.8,370" />
+                </g>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="132" y="12" width="96"
+                    height="36" rx="18" /><text x="180" y="31" text-anchor="middle" dominant-baseline="central"
+                    font-size="14" font-family="system-ui,sans-serif" fill="var(--fg,#1d2433)">Start</text>
+                <polygon fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2"
+                    points="180,79 287.8,115 180,151 72.2,115" /><text x="180" y="116" text-anchor="middle"
+                    dominant-baseline="central" font-size="14" font-family="system-ui,sans-serif"
+                    fill="var(--fg,#1d2433)">Seats left and queue?</text>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="88" y="190" width="184"
+                    height="40" rx="4" /><text x="180" y="211" text-anchor="middle" dominant-baseline="central"
+                    font-size="14" font-family="system-ui,sans-serif" fill="var(--fg,#1d2433)">Board next
+                    passenger</text>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="99.4" y="265" width="161.2"
+                    height="40" rx="4" /><text x="180" y="286" text-anchor="middle" dominant-baseline="central"
+                    font-size="14" font-family="system-ui,sans-serif" fill="var(--fg,#1d2433)">seats = seats - 1</text>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="110.8" y="355"
+                    width="138.4" height="40" rx="4" /><text x="180" y="376" text-anchor="middle"
+                    dominant-baseline="central" font-size="14" font-family="system-ui,sans-serif"
+                    fill="var(--fg,#1d2433)">Close the door</text><text x="202" y="163" text-anchor="middle"
+                    dominant-baseline="central" font-size="12" font-weight="700" font-family="system-ui,sans-serif"
+                    fill="var(--ac,#1f5f8b)"
+                    style="paint-order:stroke;stroke:var(--bg,#fafaf7);stroke-width:4px">Yes</text><text x="46" y="103"
+                    text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="700"
+                    font-family="system-ui,sans-serif" fill="var(--ac,#1f5f8b)"
+                    style="paint-order:stroke;stroke:var(--bg,#fafaf7);stroke-width:4px">No</text>
+            </svg></div>
+        <h3>Example: complete code</h3>
+        <p class="rem" style="color:var(--mu)">This program codes the Campus Café scenario above. Compile it, run it,
+            and compare with the sample run.</p>
+        <pre>#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int queue;
+    cout &lt;&lt; "Enter the queue size: ";
+    cin &gt;&gt; queue;
+
+    int served = 0;
+    while (queue &gt; 0) {
+        served++;
+        cout &lt;&lt; "Serving customer " &lt;&lt; served &lt;&lt; endl;
+        queue--;
+    }
+    cout &lt;&lt; "Counter closed. Served: " &lt;&lt; served &lt;&lt; endl;
+    return 0;
+}</pre>
+        <div class="lab">Sample run</div>
+        <pre>Enter the queue size: 3
+Serving customer 1
+Serving customer 2
+Serving customer 3
+Counter closed. Served: 3</pre>
+        <h3>Comparison with an earlier construct</h3>
+        <p>Compared with the for loop just discussed:</p>
+        <div class="tw">
+            <table>
+                <tr>
+                    <th></th>
+                    <th>for</th>
+                    <th>while</th>
+                </tr>
+                <tr>
+                    <td>Best fit</td>
+                    <td>the number of repeats is known in advance</td>
+                    <td>repeats depend on a condition; the count is not known beforehand</td>
+                </tr>
+                <tr>
+                    <td>Counter</td>
+                    <td>built into the for statement itself</td>
+                    <td>declared and updated by hand, wherever makes sense</td>
+                </tr>
+                <tr>
+                    <td>Test timing</td>
+                    <td>before each pass</td>
+                    <td>before each pass (same as for)</td>
+                </tr>
+            </table>
+        </div>
+        <p>Trace of <code>i = 1; sum = 0; while (i &lt;= n) { sum += i; ++i; }</code> for n = 5:</p>
+        <div class="tw">
+            <table>
+                <tr>
+                    <th>Iteration</th>
+                    <th>i</th>
+                    <th>i &lt;= n</th>
+                    <th>sum += i</th>
+                    <th>++i</th>
+                </tr>
+                <tr>
+                    <td>1st</td>
+                    <td>1</td>
+                    <td>true</td>
+                    <td>1</td>
+                    <td>2</td>
+                </tr>
+                <tr>
+                    <td>2nd</td>
+                    <td>2</td>
+                    <td>true</td>
+                    <td>3</td>
+                    <td>3</td>
+                </tr>
+                <tr>
+                    <td>3rd</td>
+                    <td>3</td>
+                    <td>true</td>
+                    <td>6</td>
+                    <td>4</td>
+                </tr>
+                <tr>
+                    <td>4th</td>
+                    <td>4</td>
+                    <td>true</td>
+                    <td>10</td>
+                    <td>5</td>
+                </tr>
+                <tr>
+                    <td>5th</td>
+                    <td>5</td>
+                    <td>true</td>
+                    <td>15</td>
+                    <td>6</td>
+                </tr>
+                <tr>
+                    <td>6th</td>
+                    <td>6</td>
+                    <td>false</td>
+                    <td>(loop ends)</td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+        <div class="tip"><b>Every loop must have an exit</b>Somewhere inside the body, something must eventually make
+            the condition false — here, <code>++i</code>. Forgetting this gives an <b>infinite loop</b>.</div>
+        <h2 id="dowhile">3) The do-while loop</h2>
+        
+        <ul>
+            <li>Like <code>while</code>, but the condition is checked <b>after</b> the body runs.</li>
+            <li>The body always executes <b>at least once</b>, even if the condition is false from the start.</li>
+        </ul>
+        <h3>Syntax</h3>
+        <pre>do
+{
+    statement(s);
+} while (expression);</pre>
+        <div class="lab">What each part means</div>
+        <ul>
+            <li>The body runs first, unconditionally.</li>
+            <li><code>expression</code> is then checked. True → go around again; false → the loop ends.</li>
+            <li>Note the semicolon after <code>while (expression)</code> — easy to forget.</li>
+        </ul>
+        <div class="tip"><b>In one sentence</b>Run the body first, then test; it always runs at least once.</div>
+        <h3>Everyday analogy</h3>
+        <p>Taste the soup, then decide whether it needs more salt. You must taste <b>at least once</b>. An ATM
+            asks for your PIN at least once, then asks again while it is wrong.</p>
+        <h3>Case study 1 — Campus Café</h3>
+        <div class="grid">
+            <div class="card">
+                <h3>Problem description</h3>
+                <p>Ask “Anything else?” and take the answer. Repeat while the customer says yes. You always ask once.
+                </p>
+            </div>
+            <div>
+                <div class="lab"><b>Pseudocode</b></div>
+                <pre>do
+    ask "Anything else?"
+    read the answer
+while answer is yes
+print the bill</pre>
+            </div>
+        </div>
+        <div class="fcw"><svg class="fc" viewBox="57.8 -4 296.2 328" width="296.2" role="img"
+                aria-label="Flowchart: do-while loop, anything else" xmlns="http://www.w3.org/2000/svg">
+                <g fill="none" stroke="var(--ac,#1f5f8b)" stroke-width="2" stroke-linejoin="round">
+                    <polyline points="160,50 160,85" />
+                    <polyline points="160,125 160,159" />
+                    <polyline points="160,231 160,270" />
+                    <polyline points="241.2,195 340,195 340,30 248.2,30" />
+                </g>
+                <g fill="var(--ac,#1f5f8b)">
+                    <polygon points="160,85 155,76 165,76" />
+                    <polygon points="160,159 155,150 165,150" />
+                    <polygon points="160,270 155,261 165,261" />
+                    <polygon points="248.2,30 257.2,25 257.2,35" />
+                </g>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="71.8" y="10" width="176.4"
+                    height="40" rx="4" /><text x="160" y="31" text-anchor="middle" dominant-baseline="central"
+                    font-size="14" font-family="system-ui,sans-serif" fill="var(--fg,#1d2433)">Ask: Anything
+                    else?</text>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="87" y="85" width="146"
+                    height="40" rx="4" /><text x="160" y="106" text-anchor="middle" dominant-baseline="central"
+                    font-size="14" font-family="system-ui,sans-serif" fill="var(--fg,#1d2433)">Read the answer</text>
+                <polygon fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2"
+                    points="160,159 241.2,195 160,231 78.8,195" /><text x="160" y="196" text-anchor="middle"
+                    dominant-baseline="central" font-size="14" font-family="system-ui,sans-serif"
+                    fill="var(--fg,#1d2433)">Answer is yes?</text>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="90.8" y="270" width="138.4"
+                    height="40" rx="4" /><text x="160" y="291" text-anchor="middle" dominant-baseline="central"
+                    font-size="14" font-family="system-ui,sans-serif" fill="var(--fg,#1d2433)">Print the
+                    bill</text><text x="180" y="245" text-anchor="middle" dominant-baseline="central" font-size="12"
+                    font-weight="700" font-family="system-ui,sans-serif" fill="var(--ac,#1f5f8b)"
+                    style="paint-order:stroke;stroke:var(--bg,#fafaf7);stroke-width:4px">No</text><text x="300" y="183"
+                    text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="700"
+                    font-family="system-ui,sans-serif" fill="var(--ac,#1f5f8b)"
+                    style="paint-order:stroke;stroke:var(--bg,#fafaf7);stroke-width:4px">Yes</text>
+            </svg></div>
+        <h3>Case study 2 — City Bus Terminal</h3>
+        <div class="grid">
+            <div class="card">
+                <h3>Problem description</h3>
+                <p>The dispatcher announces departure at least once, then counts missing passengers and repeats while
+                    anyone is missing.</p>
+                <p class="mu" style="color:var(--mu)">Everyday echo: tasting the soup first, then deciding</p>
+            </div>
+            <div>
+                <div class="lab"><b>Pseudocode</b></div>
+                <pre>do
+    announce departure
+    count missing passengers
+while anyone is missing
+depart</pre>
+            </div>
+        </div>
+        <div class="fcw"><svg class="fc" viewBox="38.8 -4 335.2 328" width="335.2" role="img"
+                aria-label="Flowchart: do-while loop, departure call" xmlns="http://www.w3.org/2000/svg">
+                <g fill="none" stroke="var(--ac,#1f5f8b)" stroke-width="2" stroke-linejoin="round">
+                    <polyline points="160,50 160,85" />
+                    <polyline points="160,125 160,159" />
+                    <polyline points="160,231 160,270" />
+                    <polyline points="245,195 360,195 360,30 244.4,30" />
+                </g>
+                <g fill="var(--ac,#1f5f8b)">
+                    <polygon points="160,85 155,76 165,76" />
+                    <polygon points="160,159 155,150 165,150" />
+                    <polygon points="160,270 155,261 165,261" />
+                    <polygon points="244.4,30 253.4,25 253.4,35" />
+                </g>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="75.6" y="10" width="168.8"
+                    height="40" rx="4" /><text x="160" y="31" text-anchor="middle" dominant-baseline="central"
+                    font-size="14" font-family="system-ui,sans-serif" fill="var(--fg,#1d2433)">Announce departure</text>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="52.8" y="85" width="214.4"
+                    height="40" rx="4" /><text x="160" y="106" text-anchor="middle" dominant-baseline="central"
+                    font-size="14" font-family="system-ui,sans-serif" fill="var(--fg,#1d2433)">Count missing
+                    passengers</text>
+                <polygon fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2"
+                    points="160,159 245,195 160,231 75,195" /><text x="160" y="196" text-anchor="middle"
+                    dominant-baseline="central" font-size="14" font-family="system-ui,sans-serif"
+                    fill="var(--fg,#1d2433)">Anyone missing?</text>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="100" y="270" width="120"
+                    height="40" rx="4" /><text x="160" y="291" text-anchor="middle" dominant-baseline="central"
+                    font-size="14" font-family="system-ui,sans-serif" fill="var(--fg,#1d2433)">Depart</text><text
+                    x="180" y="245" text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="700"
+                    font-family="system-ui,sans-serif" fill="var(--ac,#1f5f8b)"
+                    style="paint-order:stroke;stroke:var(--bg,#fafaf7);stroke-width:4px">No</text><text x="318" y="183"
+                    text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="700"
+                    font-family="system-ui,sans-serif" fill="var(--ac,#1f5f8b)"
+                    style="paint-order:stroke;stroke:var(--bg,#fafaf7);stroke-width:4px">Yes</text>
+            </svg></div>
+        <h3>Example: complete code</h3>
+        <p class="rem" style="color:var(--mu)">This program codes the Campus Café scenario above. Compile it, run it,
+            and compare with the sample run.</p>
+        <pre>#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+using namespace std;
+
+int main() {
+    double price, total = 0;
+    int more;
+
+    do {
+        cout &lt;&lt; "Enter item price: ";
+        cin &gt;&gt; price;
+        total += price;
+        cout &lt;&lt; "Anything else? (1 = yes, 0 = no): ";
+        cin &gt;&gt; more;
+    } while (more == 1);
+
+    cout &lt;&lt; fixed &lt;&lt; setprecision(2);
+    cout &lt;&lt; "Total bill: " &lt;&lt; total &lt;&lt; " birr" &lt;&lt; endl;
+    return 0;
+}</pre>
+        <div class="lab">Sample run</div>
+        <pre>Enter item price: 50
+Anything else? (1 = yes, 0 = no): 1
+Enter item price: 30
+Anything else? (1 = yes, 0 = no): 0
+Total bill: 80.00 birr</pre>
+        <h3>Comparison with an earlier construct</h3>
+        <p>Compared with the while loop just discussed:</p>
+        <div class="tw">
+            <table>
+                <tr>
+                    <th></th>
+                    <th>while</th>
+                    <th>do-while</th>
+                </tr>
+                <tr>
+                    <td>Test timing</td>
+                    <td>before the body</td>
+                    <td>after the body</td>
+                </tr>
+                <tr>
+                    <td>Minimum runs</td>
+                    <td>0</td>
+                    <td>1 — always runs at least once</td>
+                </tr>
+                <tr>
+                    <td>Best fit</td>
+                    <td>skip entirely if the condition starts false</td>
+                    <td>the body must run once before there is anything to test, e.g. validating what the user just
+                        typed</td>
+                </tr>
+            </table>
+        </div>
+        <p>do-while fits naturally when the stopping condition can only be known <b>after</b> doing the work once — for
+            example, validating a value the user just entered:</p>
+        <pre>bool valid = false;
+int number;
+do {
+    cout &lt;&lt; "Enter a number from 1 to 10: ";
+    cin &gt;&gt; number;
+    if (number &gt;= 1 &amp;&amp; number &lt;= 10) {
+        valid = true;
+    }
+} while (!valid);</pre>
+
+        <h2 id="nestedloop">3.4.4. Nested loops</h2>
+        <p>Loops can contain other loops, to any depth.</p>
+        <pre>for (int i = 1; i &lt;= 3; ++i)
+{
+    for (int j = 1; j &lt;= 3; ++j)
+    {
+        cout &lt;&lt; "(" &lt;&lt; i &lt;&lt; "," &lt;&lt; j &lt;&lt; ") ";
+    }
+}
+// output: (1,1) (1,2) (1,3) (2,1) (2,2) (2,3) (3,1) (3,2) (3,3)</pre>
+        <div class="tip"><b>Scope in nested loops</b>A loop counter declared with <code>for (int i = ...)</code> exists
+            only inside that loop. Two different loops — even nested ones — may each declare their own variable named
+            <code>i</code> without clashing, because each <code>i</code>’s scope is its own loop.</div>
+        <h2 id="jumpintro">3.5 Jump statements</h2>
+        <p>Jump statements interrupt the normal flow of a loop, switch, or function: <code>break</code>,
+            <code>continue</code>, and (inside <code>main</code>) <code>return</code>. C++ also has <code>goto</code>,
+            which is explained but discouraged.</p>
+        <h2 id="break">break: leave the loop (or switch) now</h2>
+        
+        <ul>
+            <li>Inside a loop, <code>break</code> <b>exits the loop immediately</b>, even if its condition has not
+                become false.</li>
+            <li>Also used inside <code>switch</code>, where it stops fall-through into the next case.</li>
+        </ul>
+        <h3>Syntax</h3>
+        <pre>break;</pre>
+        <div class="lab">What each part means</div>
+        <ul>
+            <li>Takes no arguments — just the single keyword and a semicolon.</li>
+            <li>Affects only the <b>nearest enclosing</b> loop or switch; using it anywhere else is an error.</li>
+            <li>Execution continues with the statement immediately <b>after</b> the loop or switch.</li>
+        </ul>
+        <div class="tip"><b>In one sentence</b>Leave the loop or switch immediately.</div>
+        <h3>Everyday analogy</h3>
+        <p>A fire alarm: you leave the building immediately, not after finishing your work. Or searching for
+            your friend in the cafeteria: stop looking once you find them.</p>
+        <h3>Case study 1 — Campus Café</h3>
+        <div class="grid">
+            <div class="card">
+                <h3>Problem description</h3>
+                <p>While serving customers, if the injera is finished, stop serving immediately.</p>
+            </div>
+            <div>
+                <div class="lab"><b>Pseudocode</b></div>
+                <pre>while there are customers
+    if injera is finished
+        break
+    serve customer</pre>
+            </div>
+        </div>
+        <div class="fcw"><svg class="fc" viewBox="1 -2 343 446" width="343" role="img"
+                aria-label="Flowchart: break, stop serving" xmlns="http://www.w3.org/2000/svg">
+                <g fill="none" stroke="var(--ac,#1f5f8b)" stroke-width="2" stroke-linejoin="round">
+                    <polyline points="160,48 160,79" />
+                    <polyline points="160,151 160,179" />
+                    <polyline points="160,251 160,295" />
+                    <polyline points="229.2,315 330,315 330,115 245,115" />
+                    <polyline points="71.2,215 50,215 50,410 90.8,410" />
+                    <polyline points="75,115 15,115 15,410 90.8,410" />
+                </g>
+                <g fill="var(--ac,#1f5f8b)">
+                    <polygon points="160,79 155,70 165,70" />
+                    <polygon points="160,179 155,170 165,170" />
+                    <polygon points="160,295 155,286 165,286" />
+                    <polygon points="245,115 254,110 254,120" />
+                    <polygon points="90.8,410 81.8,415 81.8,405" />
+                    <polygon points="90.8,410 81.8,415 81.8,405" />
+                </g>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="112" y="12" width="96"
+                    height="36" rx="18" /><text x="160" y="31" text-anchor="middle" dominant-baseline="central"
+                    font-size="14" font-family="system-ui,sans-serif" fill="var(--fg,#1d2433)">Start</text>
+                <polygon fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2"
+                    points="160,79 245,115 160,151 75,115" /><text x="160" y="116" text-anchor="middle"
+                    dominant-baseline="central" font-size="14" font-family="system-ui,sans-serif"
+                    fill="var(--fg,#1d2433)">More customers?</text>
+                <polygon fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2"
+                    points="160,179 248.8,215 160,251 71.2,215" /><text x="160" y="216" text-anchor="middle"
+                    dominant-baseline="central" font-size="14" font-family="system-ui,sans-serif"
+                    fill="var(--fg,#1d2433)">Injera finished?</text>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="90.8" y="295" width="138.4"
+                    height="40" rx="4" /><text x="160" y="316" text-anchor="middle" dominant-baseline="central"
+                    font-size="14" font-family="system-ui,sans-serif" fill="var(--fg,#1d2433)">Serve customer</text>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="90.8" y="390" width="138.4"
+                    height="40" rx="4" /><text x="160" y="411" text-anchor="middle" dominant-baseline="central"
+                    font-size="14" font-family="system-ui,sans-serif" fill="var(--fg,#1d2433)">After the
+                    loop</text><text x="182" y="165" text-anchor="middle" dominant-baseline="central" font-size="12"
+                    font-weight="700" font-family="system-ui,sans-serif" fill="var(--ac,#1f5f8b)"
+                    style="paint-order:stroke;stroke:var(--bg,#fafaf7);stroke-width:4px">Yes</text><text x="182" y="265"
+                    text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="700"
+                    font-family="system-ui,sans-serif" fill="var(--ac,#1f5f8b)"
+                    style="paint-order:stroke;stroke:var(--bg,#fafaf7);stroke-width:4px">No</text><text x="84" y="203"
+                    text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="700"
+                    font-family="system-ui,sans-serif" fill="var(--ac,#1f5f8b)"
+                    style="paint-order:stroke;stroke:var(--bg,#fafaf7);stroke-width:4px">Yes</text><text x="44" y="103"
+                    text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="700"
+                    font-family="system-ui,sans-serif" fill="var(--ac,#1f5f8b)"
+                    style="paint-order:stroke;stroke:var(--bg,#fafaf7);stroke-width:4px">No</text>
+            </svg></div>
+        <h3>Case study 2 — City Bus Terminal</h3>
+        <div class="grid">
+            <div class="card">
+                <h3>Problem description</h3>
+                <p>While boarding, as soon as the bus is full, stop boarding at once.</p>
+                <p class="mu" style="color:var(--mu)">Everyday echo: a fire alarm: leave immediately</p>
+            </div>
+            <div>
+                <div class="lab"><b>Pseudocode</b></div>
+                <pre>while there are passengers
+    if bus is full
+        break
+    board passenger</pre>
+            </div>
+        </div>
+        <div class="fcw"><svg class="fc" viewBox="1 -2 353 446" width="353" role="img"
+                aria-label="Flowchart: break, bus is full" xmlns="http://www.w3.org/2000/svg">
+                <g fill="none" stroke="var(--ac,#1f5f8b)" stroke-width="2" stroke-linejoin="round">
+                    <polyline points="160,48 160,79" />
+                    <polyline points="160,151 160,179" />
+                    <polyline points="160,251 160,295" />
+                    <polyline points="233,315 340,315 340,115 248.8,115" />
+                    <polyline points="97.8,215 50,215 50,410 90.8,410" />
+                    <polyline points="71.2,115 15,115 15,410 90.8,410" />
+                </g>
+                <g fill="var(--ac,#1f5f8b)">
+                    <polygon points="160,79 155,70 165,70" />
+                    <polygon points="160,179 155,170 165,170" />
+                    <polygon points="160,295 155,286 165,286" />
+                    <polygon points="248.8,115 257.8,110 257.8,120" />
+                    <polygon points="90.8,410 81.8,415 81.8,405" />
+                    <polygon points="90.8,410 81.8,415 81.8,405" />
+                </g>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="112" y="12" width="96"
+                    height="36" rx="18" /><text x="160" y="31" text-anchor="middle" dominant-baseline="central"
+                    font-size="14" font-family="system-ui,sans-serif" fill="var(--fg,#1d2433)">Start</text>
+                <polygon fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2"
+                    points="160,79 248.8,115 160,151 71.2,115" /><text x="160" y="116" text-anchor="middle"
+                    dominant-baseline="central" font-size="14" font-family="system-ui,sans-serif"
+                    fill="var(--fg,#1d2433)">More passengers?</text>
+                <polygon fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2"
+                    points="160,179 222.2,215 160,251 97.8,215" /><text x="160" y="216" text-anchor="middle"
+                    dominant-baseline="central" font-size="14" font-family="system-ui,sans-serif"
+                    fill="var(--fg,#1d2433)">Bus full?</text>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="87" y="295" width="146"
+                    height="40" rx="4" /><text x="160" y="316" text-anchor="middle" dominant-baseline="central"
+                    font-size="14" font-family="system-ui,sans-serif" fill="var(--fg,#1d2433)">Board passenger</text>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="90.8" y="390" width="138.4"
+                    height="40" rx="4" /><text x="160" y="411" text-anchor="middle" dominant-baseline="central"
+                    font-size="14" font-family="system-ui,sans-serif" fill="var(--fg,#1d2433)">After the
+                    loop</text><text x="182" y="165" text-anchor="middle" dominant-baseline="central" font-size="12"
+                    font-weight="700" font-family="system-ui,sans-serif" fill="var(--ac,#1f5f8b)"
+                    style="paint-order:stroke;stroke:var(--bg,#fafaf7);stroke-width:4px">Yes</text><text x="182" y="265"
+                    text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="700"
+                    font-family="system-ui,sans-serif" fill="var(--ac,#1f5f8b)"
+                    style="paint-order:stroke;stroke:var(--bg,#fafaf7);stroke-width:4px">No</text><text x="88" y="203"
+                    text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="700"
+                    font-family="system-ui,sans-serif" fill="var(--ac,#1f5f8b)"
+                    style="paint-order:stroke;stroke:var(--bg,#fafaf7);stroke-width:4px">Yes</text><text x="44" y="103"
+                    text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="700"
+                    font-family="system-ui,sans-serif" fill="var(--ac,#1f5f8b)"
+                    style="paint-order:stroke;stroke:var(--bg,#fafaf7);stroke-width:4px">No</text>
+            </svg></div>
+        <h3>Example: complete code</h3>
+        <p class="rem" style="color:var(--mu)">This program codes the Campus Café scenario above. Compile it, run it,
+            and compare with the sample run.</p>
+        <pre>#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int stock = 10, portions;
+
+    for (int customer = 1; customer &lt;= 6; customer++) {
+        cout &lt;&lt; "Customer " &lt;&lt; customer &lt;&lt; " wants portions: ";
+        cin &gt;&gt; portions;
+        if (portions &gt; stock) {
+            cout &lt;&lt; "Not enough injera. Stop serving." &lt;&lt; endl;
+            break;                      // leave the loop now
+        }
+        stock -= portions;
+        cout &lt;&lt; "Served. Stock left: " &lt;&lt; stock &lt;&lt; endl;
+    }
+    cout &lt;&lt; "Closing stock: " &lt;&lt; stock &lt;&lt; endl;
+    return 0;
+}</pre>
+        <div class="lab">Sample run</div>
+        <pre>Customer 1 wants portions: 3
+Served. Stock left: 7
+Customer 2 wants portions: 4
+Served. Stock left: 3
+Customer 3 wants portions: 2
+Served. Stock left: 1
+Customer 4 wants portions: 5
+Not enough injera. Stop serving.
+Closing stock: 1</pre>
+        <h3>Comparison with an earlier construct</h3>
+        <p>Without break, a loop only ends when its own condition becomes false. break gives a loop a <b>second,
+                early</b> way to end:</p>
+        <div class="tw">
+            <table>
+                <tr>
+                    <th></th>
+                    <th>Natural end (condition false)</th>
+                    <th>break</th>
+                </tr>
+                <tr>
+                    <td>When it happens</td>
+                    <td>the loop’s own test fails</td>
+                    <td>an event inside the body demands an immediate stop</td>
+                </tr>
+                <tr>
+                    <td>Where the test lives</td>
+                    <td>in the loop header</td>
+                    <td>inside an if, anywhere in the body</td>
+                </tr>
+            </table>
+        </div>
+        <h2 id="continue">continue: skip this round, keep looping</h2>
+        
+        <ul>
+            <li><code>continue</code> skips the rest of the <b>current</b> pass and jumps straight to the next one.</li>
+            <li>In a for loop that means jumping to the update expression; in while/do-while, to the condition test.
+            </li>
+        </ul>
+        <h3>Syntax</h3>
+        <pre>continue;</pre>
+        <div class="lab">What each part means</div>
+        <ul>
+            <li>Takes no arguments — just the single keyword and a semicolon.</li>
+            <li>In <b>nested</b> loops, continue applies only to the <b>innermost</b> loop that contains it.</li>
+            <li>The loop itself keeps running; only the rest of that one pass is skipped.</li>
+        </ul>
+        <div class="tip"><b>In one sentence</b>Skip the rest of this pass and go straight to the next one.</div>
+        <h3>Everyday analogy</h3>
+        <p>Skipping a song on a playlist: you do not stop the music, you just move to the next song.</p>
+        <h3>Case study 1 — Campus Café</h3>
+        <div class="grid">
+            <div class="card">
+                <h3>Problem description</h3>
+                <p>A customer has no queue number: skip that customer and call the next one.</p>
+            </div>
+            <div>
+                <div class="lab"><b>Pseudocode</b></div>
+                <pre>while there are customers
+    if customer has no queue number
+        continue
+    serve customer</pre>
+            </div>
+        </div>
+        <div class="fcw"><svg class="fc" viewBox="1 -2 368 446" width="368" role="img"
+                aria-label="Flowchart: continue, skip a customer" xmlns="http://www.w3.org/2000/svg">
+                <g fill="none" stroke="var(--ac,#1f5f8b)" stroke-width="2" stroke-linejoin="round">
+                    <polyline points="160,48 160,79" />
+                    <polyline points="160,151 160,179" />
+                    <polyline points="160,251 160,295" />
+                    <polyline points="252.6,215 330,215 330,115 245,115" />
+                    <polyline points="229.2,315 355,315 355,115 245,115" />
+                    <polyline points="75,115 15,115 15,410 90.8,410" />
+                </g>
+                <g fill="var(--ac,#1f5f8b)">
+                    <polygon points="160,79 155,70 165,70" />
+                    <polygon points="160,179 155,170 165,170" />
+                    <polygon points="160,295 155,286 165,286" />
+                    <polygon points="245,115 254,110 254,120" />
+                    <polygon points="245,115 254,110 254,120" />
+                    <polygon points="90.8,410 81.8,415 81.8,405" />
+                </g>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="112" y="12" width="96"
+                    height="36" rx="18" /><text x="160" y="31" text-anchor="middle" dominant-baseline="central"
+                    font-size="14" font-family="system-ui,sans-serif" fill="var(--fg,#1d2433)">Start</text>
+                <polygon fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2"
+                    points="160,79 245,115 160,151 75,115" /><text x="160" y="116" text-anchor="middle"
+                    dominant-baseline="central" font-size="14" font-family="system-ui,sans-serif"
+                    fill="var(--fg,#1d2433)">More customers?</text>
+                <polygon fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2"
+                    points="160,179 252.6,215 160,251 67.4,215" /><text x="160" y="216" text-anchor="middle"
+                    dominant-baseline="central" font-size="14" font-family="system-ui,sans-serif"
+                    fill="var(--fg,#1d2433)">Has queue number?</text>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="90.8" y="295" width="138.4"
+                    height="40" rx="4" /><text x="160" y="316" text-anchor="middle" dominant-baseline="central"
+                    font-size="14" font-family="system-ui,sans-serif" fill="var(--fg,#1d2433)">Serve customer</text>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="90.8" y="390" width="138.4"
+                    height="40" rx="4" /><text x="160" y="411" text-anchor="middle" dominant-baseline="central"
+                    font-size="14" font-family="system-ui,sans-serif" fill="var(--fg,#1d2433)">After the
+                    loop</text><text x="182" y="165" text-anchor="middle" dominant-baseline="central" font-size="12"
+                    font-weight="700" font-family="system-ui,sans-serif" fill="var(--ac,#1f5f8b)"
+                    style="paint-order:stroke;stroke:var(--bg,#fafaf7);stroke-width:4px">Yes</text><text x="182" y="265"
+                    text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="700"
+                    font-family="system-ui,sans-serif" fill="var(--ac,#1f5f8b)"
+                    style="paint-order:stroke;stroke:var(--bg,#fafaf7);stroke-width:4px">Yes</text><text x="281" y="203"
+                    text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="700"
+                    font-family="system-ui,sans-serif" fill="var(--ac,#1f5f8b)"
+                    style="paint-order:stroke;stroke:var(--bg,#fafaf7);stroke-width:4px">No: skip</text><text x="44"
+                    y="103" text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="700"
+                    font-family="system-ui,sans-serif" fill="var(--ac,#1f5f8b)"
+                    style="paint-order:stroke;stroke:var(--bg,#fafaf7);stroke-width:4px">No</text>
+            </svg></div>
+        <h3>Case study 2 — City Bus Terminal</h3>
+        <div class="grid">
+            <div class="card">
+                <h3>Problem description</h3>
+                <p>A passenger without a ticket is skipped. The clerk calls the next passenger and boarding carries on.
+                </p>
+                <p class="mu" style="color:var(--mu)">Everyday echo: skipping one song on a playlist</p>
+            </div>
+            <div>
+                <div class="lab"><b>Pseudocode</b></div>
+                <pre>while there are passengers
+    if passenger has no ticket
+        continue
+    board passenger</pre>
+            </div>
+        </div>
+        <div class="fcw"><svg class="fc" viewBox="1 -2 368 446" width="368" role="img"
+                aria-label="Flowchart: continue, no ticket" xmlns="http://www.w3.org/2000/svg">
+                <g fill="none" stroke="var(--ac,#1f5f8b)" stroke-width="2" stroke-linejoin="round">
+                    <polyline points="160,48 160,79" />
+                    <polyline points="160,151 160,179" />
+                    <polyline points="160,251 160,295" />
+                    <polyline points="229.8,215 330,215 330,115 248.8,115" />
+                    <polyline points="233,315 355,315 355,115 248.8,115" />
+                    <polyline points="71.2,115 15,115 15,410 90.8,410" />
+                </g>
+                <g fill="var(--ac,#1f5f8b)">
+                    <polygon points="160,79 155,70 165,70" />
+                    <polygon points="160,179 155,170 165,170" />
+                    <polygon points="160,295 155,286 165,286" />
+                    <polygon points="248.8,115 257.8,110 257.8,120" />
+                    <polygon points="248.8,115 257.8,110 257.8,120" />
+                    <polygon points="90.8,410 81.8,415 81.8,405" />
+                </g>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="112" y="12" width="96"
+                    height="36" rx="18" /><text x="160" y="31" text-anchor="middle" dominant-baseline="central"
+                    font-size="14" font-family="system-ui,sans-serif" fill="var(--fg,#1d2433)">Start</text>
+                <polygon fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2"
+                    points="160,79 248.8,115 160,151 71.2,115" /><text x="160" y="116" text-anchor="middle"
+                    dominant-baseline="central" font-size="14" font-family="system-ui,sans-serif"
+                    fill="var(--fg,#1d2433)">More passengers?</text>
+                <polygon fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2"
+                    points="160,179 229.8,215 160,251 90.2,215" /><text x="160" y="216" text-anchor="middle"
+                    dominant-baseline="central" font-size="14" font-family="system-ui,sans-serif"
+                    fill="var(--fg,#1d2433)">Has ticket?</text>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="87" y="295" width="146"
+                    height="40" rx="4" /><text x="160" y="316" text-anchor="middle" dominant-baseline="central"
+                    font-size="14" font-family="system-ui,sans-serif" fill="var(--fg,#1d2433)">Board passenger</text>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="90.8" y="390" width="138.4"
+                    height="40" rx="4" /><text x="160" y="411" text-anchor="middle" dominant-baseline="central"
+                    font-size="14" font-family="system-ui,sans-serif" fill="var(--fg,#1d2433)">After the
+                    loop</text><text x="182" y="165" text-anchor="middle" dominant-baseline="central" font-size="12"
+                    font-weight="700" font-family="system-ui,sans-serif" fill="var(--ac,#1f5f8b)"
+                    style="paint-order:stroke;stroke:var(--bg,#fafaf7);stroke-width:4px">Yes</text><text x="182" y="265"
+                    text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="700"
+                    font-family="system-ui,sans-serif" fill="var(--ac,#1f5f8b)"
+                    style="paint-order:stroke;stroke:var(--bg,#fafaf7);stroke-width:4px">Yes</text><text x="268" y="203"
+                    text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="700"
+                    font-family="system-ui,sans-serif" fill="var(--ac,#1f5f8b)"
+                    style="paint-order:stroke;stroke:var(--bg,#fafaf7);stroke-width:4px">No: skip</text><text x="44"
+                    y="103" text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="700"
+                    font-family="system-ui,sans-serif" fill="var(--ac,#1f5f8b)"
+                    style="paint-order:stroke;stroke:var(--bg,#fafaf7);stroke-width:4px">No</text>
+            </svg></div>
+        <h3>Example: complete code</h3>
+        <p class="rem" style="color:var(--mu)">This program codes the Campus Café scenario above. Compile it, run it,
+            and compare with the sample run.</p>
+        <pre>#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+using namespace std;
+
+int main() {
+    double order, total = 0;
+    int validCount = 0;
+
+    for (int i = 1; i &lt;= 6; i++) {
+        cout &lt;&lt; "Order " &lt;&lt; i &lt;&lt; " amount: ";
+        cin &gt;&gt; order;
+        if (order &lt;= 0) {
+            cout &lt;&lt; "Skipped." &lt;&lt; endl;
+            continue;                  // go straight to the next order
+        }
+        total += order;
+        validCount++;
+    }
+
+    cout &lt;&lt; fixed &lt;&lt; setprecision(2);
+    cout &lt;&lt; "Valid orders: " &lt;&lt; validCount &lt;&lt; ", total: " &lt;&lt; total &lt;&lt; " birr" &lt;&lt; endl;
+    return 0;
+}</pre>
+        <div class="lab">Sample run</div>
+        <pre>Order 1 amount: 50
+Order 2 amount: -10
+Skipped.
+Order 3 amount: 0
+Skipped.
+Order 4 amount: 30
+Order 5 amount: 20
+Order 6 amount: 100
+Valid orders: 4, total: 200.00 birr</pre>
+        <h3>Comparison with an earlier construct</h3>
+        <p>Both interrupt a loop, but to very different degrees:</p>
+        <div class="tw">
+            <table>
+                <tr>
+                    <th></th>
+                    <th>break</th>
+                    <th>continue</th>
+                </tr>
+                <tr>
+                    <td>Effect</td>
+                    <td>leaves the loop completely</td>
+                    <td>skips only the rest of the current pass</td>
+                </tr>
+                <tr>
+                    <td>Loop continues afterwards?</td>
+                    <td>no</td>
+                    <td>yes, with the next iteration</td>
+                </tr>
+                <tr>
+                    <td>Analogy</td>
+                    <td>a fire alarm — leave the building</td>
+                    <td>skipping one song on a playlist, the music keeps playing</td>
+                </tr>
+            </table>
+        </div>
+        <h2 id="return">return: finish the job and hand back a result</h2>
+        
+        <ul>
+            <li><code>return</code> ends the current function immediately.</li>
+            <li>Inside <code>main</code>, it ends the whole program; the value given is the program’s exit code (Chapter
+                2: 0 for normal, non-zero for abnormal).</li>
+        </ul>
+        <h3>Syntax</h3>
+        <pre>return expression;</pre>
+        <div class="lab">What each part means</div>
+        <ul>
+            <li><code>expression</code> is optional for a function returning <code>void</code>, required otherwise — in
+                <code>main</code>, an int.</li>
+            <li>Execution leaves the function at once; any statements after <code>return</code> in the same block never
+                run.</li>
+            <li>Unlike break and continue, return can carry a <b>value</b> back to whoever called the function.</li>
+        </ul>
+        <div class="tip"><b>In one sentence</b>End the function now, optionally handing back a value.</div>
+        <h3>Everyday analogy</h3>
+        <p>You hand in your exam paper and leave. The job is finished and you give something back.</p>
+        <h3>Case study 1 — Campus Café</h3>
+        <div class="grid">
+            <div class="card">
+                <h3>Problem description</h3>
+                <p>At closing time the cashier hands the daily sales report to the manager and goes home.</p>
+            </div>
+            <div>
+                <div class="lab"><b>Pseudocode</b></div>
+                <pre>count the day's sales
+return the total</pre>
+            </div>
+        </div>
+        <div class="fcw"><svg class="fc" viewBox="16 -4 288 216" width="288" role="img"
+                aria-label="Flowchart: return, hand over the report" xmlns="http://www.w3.org/2000/svg">
+                <g fill="none" stroke="var(--ac,#1f5f8b)" stroke-width="2" stroke-linejoin="round">
+                    <polyline points="160,50 160,85" />
+                    <polyline points="160,125 160,162" />
+                </g>
+                <g fill="var(--ac,#1f5f8b)">
+                    <polygon points="160,85 155,76 165,76" />
+                    <polygon points="160,162 155,153 165,153" />
+                </g>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="64.2" y="10" width="191.6"
+                    height="40" rx="4" /><text x="160" y="31" text-anchor="middle" dominant-baseline="central"
+                    font-size="14" font-family="system-ui,sans-serif" fill="var(--fg,#1d2433)">Count the day's
+                    sales</text>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="30" y="85" width="260"
+                    height="40" rx="4" /><text x="160" y="106" text-anchor="middle" dominant-baseline="central"
+                    font-size="14" font-family="system-ui,sans-serif" fill="var(--fg,#1d2433)">Hand the report to the
+                    manager</text>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="97.4" y="162" width="125.2"
+                    height="36" rx="18" /><text x="160" y="181" text-anchor="middle" dominant-baseline="central"
+                    font-size="14" font-family="system-ui,sans-serif" fill="var(--fg,#1d2433)">Job finished</text>
+            </svg></div>
+        <h3>Case study 2 — City Bus Terminal</h3>
+        <div class="grid">
+            <div class="card">
+                <h3>Problem description</h3>
+                <p>At the end of the trip the driver totals the fares and hands the total to the dispatcher. The job is
+                    finished.</p>
+                <p class="mu" style="color:var(--mu)">Everyday echo: handing in the exam paper and leaving</p>
+            </div>
+            <div>
+                <div class="lab"><b>Pseudocode</b></div>
+                <pre>total the fares
+return the total</pre>
+            </div>
+        </div>
+        <div class="fcw"><svg class="fc" viewBox="8.4 -4 303.2 216" width="303.2" role="img"
+                aria-label="Flowchart: return, hand over the total" xmlns="http://www.w3.org/2000/svg">
+                <g fill="none" stroke="var(--ac,#1f5f8b)" stroke-width="2" stroke-linejoin="round">
+                    <polyline points="160,50 160,85" />
+                    <polyline points="160,125 160,162" />
+                </g>
+                <g fill="var(--ac,#1f5f8b)">
+                    <polygon points="160,85 155,76 165,76" />
+                    <polygon points="160,162 155,153 165,153" />
+                </g>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="87" y="10" width="146"
+                    height="40" rx="4" /><text x="160" y="31" text-anchor="middle" dominant-baseline="central"
+                    font-size="14" font-family="system-ui,sans-serif" fill="var(--fg,#1d2433)">Total the fares</text>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="22.4" y="85" width="275.2"
+                    height="40" rx="4" /><text x="160" y="106" text-anchor="middle" dominant-baseline="central"
+                    font-size="14" font-family="system-ui,sans-serif" fill="var(--fg,#1d2433)">Hand the total to the
+                    dispatcher</text>
+                <rect fill="var(--card,#fff)" stroke="var(--ac,#1f5f8b)" stroke-width="2" x="93.6" y="162" width="132.8"
+                    height="36" rx="18" /><text x="160" y="181" text-anchor="middle" dominant-baseline="central"
+                    font-size="14" font-family="system-ui,sans-serif" fill="var(--fg,#1d2433)">Trip finished</text>
+            </svg></div>
+        <h3>Example: complete code</h3>
+        <p class="rem" style="color:var(--mu)">This program codes the Campus Café scenario above. Compile it, run it,
+            and compare with the sample run.</p>
+        <pre>#include &lt;iostream&gt;
+using namespace std;
+
+const int PRICE = 15;
+
+int main() {
+    int cups;
+    cout &lt;&lt; "How many cups ordered? ";
+    cin &gt;&gt; cups;
+
+    if (cups &lt;= 0) {
+        cout &lt;&lt; "Error: the order must be at least 1 cup." &lt;&lt; endl;
+        return 1;                      // stop the program here
+    }
+
+    cout &lt;&lt; "Bill: " &lt;&lt; cups * PRICE &lt;&lt; " birr" &lt;&lt; endl;
+    return 0;
+}</pre>
+        <div class="lab">Sample run</div>
+        <pre>How many cups ordered? -2
+Error: the order must be at least 1 cup.</pre>
+        <h3>Comparison with an earlier construct</h3>
+        <p>Compared with break and continue, discussed earlier:</p>
+        <div class="tw">
+            <table>
+                <tr>
+                    <th></th>
+                    <th>break</th>
+                    <th>continue</th>
+                    <th>return</th>
+                </tr>
+                <tr>
+                    <td>Scope of effect</td>
+                    <td>the nearest loop or switch</td>
+                    <td>the nearest loop</td>
+                    <td>the whole current function</td>
+                </tr>
+                <tr>
+                    <td>Can hand back a value?</td>
+                    <td>no</td>
+                    <td>no</td>
+                    <td>yes — the value returned to the caller</td>
+                </tr>
+                <tr>
+                    <td>Used inside main</td>
+                    <td>ends that loop only; the program carries on</td>
+                    <td>skips to the next pass; the program carries on</td>
+                    <td>ends the whole program</td>
+                </tr>
+            </table>
+        </div>
+        <h2 id="goto">The goto statement (avoid)</h2>
+        
+        <ul>
+            <li><code>goto</code> jumps unconditionally to a labeled point in the same function.</li>
+            <li>Neither case study uses goto — every example that uses it can be rewritten with a loop, and should be.
+            </li>
+        </ul>
+        <h3>Syntax</h3>
+        <pre>goto label;
+...
+label:
+    statement;</pre>
+        <div class="lab">What each part means</div>
+        <ul>
+            <li><code>label</code> is an identifier followed by a colon, marking a point in the code.</li>
+            <li><code>goto label;</code> jumps straight to that point, skipping everything in between.</li>
+        </ul>
+        <h3>Example</h3>
+        <pre>int n = 10;
+loop:                 // a label
+cout &lt;&lt; n &lt;&lt; ", ";
+n--;
+if (n &gt; 0) goto loop;
+cout &lt;&lt; "FIRE!" &lt;&lt; endl;</pre>
+        <h3>Comparison with loops</h3>
+        <div class="tw">
+            <table>
+                <tr>
+                    <th></th>
+                    <th>goto</th>
+                    <th>for / while / do-while</th>
+                </tr>
+                <tr>
+                    <td>Structure</td>
+                    <td>ignores nesting and scope</td>
+                    <td>clearly bounded block, with its own scope</td>
+                </tr>
+                <tr>
+                    <td>Readability</td>
+                    <td>jumps can land anywhere, hard to trace</td>
+                    <td>the loop body is easy to find and read</td>
+                </tr>
+                <tr>
+                    <td>Recommended?</td>
+                    <td>no — shown here only so you can recognize it</td>
+                    <td>yes, always prefer these</td>
+                </tr>
+            </table>
+        </div>
+        <h2 id="terminate">Ending a program immediately: exit and abort</h2>
+        <ul>
+            <li>return (just discussed) only ends the <b>current function</b> — in main, that ends the program.
+                Sometimes a program needs to stop immediately from <b>inside some other function</b>, for example right
+                after an unrecoverable error.</li>
+        </ul>
+        <h3>Syntax</h3>
+        <pre>exit(code);         // ends the program immediately, from anywhere
+abort();            // ends the program abnormally, usually after a fatal error</pre>
+        <div class="lab">What each part means</div>
+        <ul>
+            <li>Both need <code>#include &lt;cstdlib&gt;</code>.</li>
+            <li><code>exit(code);</code> ends the whole program at once, no matter which function calls it — 0 means
+                normal, non-zero means abnormal, exactly like returning from main.</li>
+            <li><code>abort();</code> ends the program at once, signalling a serious, unrecoverable error; it takes no
+                exit code.</li>
+        </ul>
+        <h3>Example</h3>
+        <pre>if (errorCount &gt; 10) {
+    cout &lt;&lt; "too many errors" &lt;&lt; endl;
+    exit(-1);      // or: abort();
+}</pre>
+        <h3>Comparison with return</h3>
+        <div class="tw">
+            <table>
+                <tr>
+                    <th>Statement</th>
+                    <th>Header needed</th>
+                    <th>Can be called from</th>
+                </tr>
+                <tr>
+                    <td>return code; (in main)</td>
+                    <td>—</td>
+                    <td>only main itself</td>
+                </tr>
+                <tr>
+                    <td>exit(code);</td>
+                    <td>&lt;cstdlib&gt;</td>
+                    <td>any function, anywhere in the program</td>
+                </tr>
+                <tr>
+                    <td>abort();</td>
+                    <td>&lt;cstdlib&gt;</td>
+                    <td>any function, anywhere, for abnormal termination</td>
+                </tr>
+            </table>
+        </div>
+        <h2 id="fmtio">3.7 Formatted input/output (revision)</h2>
+        <p>From Chapter 2, with <code>&lt;iomanip&gt;</code>:</p>
+        <div class="tw">
+            <table>
+                <tr>
+                    <th>Manipulator</th>
+                    <th>Effect</th>
+                </tr>
+                <tr>
+                    <td>setw(n)</td>
+                    <td>Width for the <b>next</b> output only (non-sticky)</td>
+                </tr>
+                <tr>
+                    <td>setfill(ch)</td>
+                    <td>Fill character used for padding</td>
+                </tr>
+                <tr>
+                    <td>left / right</td>
+                    <td>Alignment within the field width</td>
+                </tr>
+                <tr>
+                    <td>fixed / scientific</td>
+                    <td>Fixed-point (12.34) vs scientific (1.23e+01) notation</td>
+                </tr>
+                <tr>
+                    <td>setprecision(n)</td>
+                    <td>Digits after the decimal point (with fixed)</td>
+                </tr>
+                <tr>
+                    <td>boolalpha / noboolalpha</td>
+                    <td>Print bool as true/false, or as 1/0</td>
+                </tr>
+            </table>
+        </div>
+        <pre>double pi = 3.14159265;
+cout &lt;&lt; fixed &lt;&lt; setprecision(4);
+cout &lt;&lt; pi &lt;&lt; endl;                          // 3.1416
+cout &lt;&lt; "|" &lt;&lt; setw(10) &lt;&lt; pi &lt;&lt; "|" &lt;&lt; endl; // right-aligned in a 10-wide field
+cout &lt;&lt; boolalpha &lt;&lt; (pi &gt; 3) &lt;&lt; endl;        // true</pre>
+        <h2 id="choose2">Choosing the right construct: quick guide</h2>
+        <div class="tw">
+            <table>
+                <tr>
+                    <th>Ask yourself</th>
+                    <th>Use</th>
+                </tr>
+                <tr>
+                    <td>Must some step happen only sometimes?</td>
+                    <td>if</td>
+                </tr>
+                <tr>
+                    <td>Two ways, choose exactly one?</td>
+                    <td>if-else</td>
+                </tr>
+                <tr>
+                    <td>Several bands or ranges, first match wins?</td>
+                    <td>else-if ladder</td>
+                </tr>
+                <tr>
+                    <td>One value against exact choices?</td>
+                    <td>switch</td>
+                </tr>
+                <tr>
+                    <td>Do I know how many times?</td>
+                    <td>for</td>
+                </tr>
+                <tr>
+                    <td>Repeat until a condition changes, maybe zero times?</td>
+                    <td>while</td>
+                </tr>
+                <tr>
+                    <td>Must it run at least once?</td>
+                    <td>do-while</td>
+                </tr>
+                <tr>
+                    <td>Stop the loop early?</td>
+                    <td>break</td>
+                </tr>
+                <tr>
+                    <td>Skip just this round?</td>
+                    <td>continue</td>
+                </tr>
+            </table>
+        </div>
+        <h2 id="mis">Common misconceptions and how to answer them</h2>
+        <div class="tw">
+            <table>
+                <tr>
+                    <th>Students think…</th>
+                    <th>Why</th>
+                    <th>Fix (use the analogy)</th>
+                </tr>
+                <tr>
+                    <td>if and else both run</td>
+                    <td>They read the code like a list</td>
+                    <td>A fork in the road: you take one path only</td>
+                </tr>
+                <tr>
+                    <td>In an else-if ladder every true condition runs</td>
+                    <td>They test conditions separately</td>
+                    <td>First door that opens wins; the rest are skipped</td>
+                </tr>
+                <tr>
+                    <td>switch only runs the matching case</td>
+                    <td>They forget break</td>
+                    <td>Water flowing down steps: without break it keeps flowing into the next case</td>
+                </tr>
+                <tr>
+                    <td>A for loop runs one time too many or too few</td>
+                    <td>Counting the stops instead of the steps</td>
+                    <td>Fence posts: 12 cups, start 1 and stop at 12</td>
+                </tr>
+                <tr>
+                    <td>while always runs at least once</td>
+                    <td>Mixing it up with do-while</td>
+                    <td>while checks the door first; do-while checks after you walk in</td>
+                </tr>
+                <tr>
+                    <td>An endless loop is a computer fault</td>
+                    <td>They forget the update</td>
+                    <td>A lift stuck because nobody pressed “stop”: the counter never changes</td>
+                </tr>
+                <tr>
+                    <td>= and == are the same</td>
+                    <td>Maths habit</td>
+                    <td>= puts a value in the box; == asks “are they equal?”</td>
+                </tr>
+                <tr>
+                    <td>break stops the whole program</td>
+                    <td>The word sounds big</td>
+                    <td>Break leaves one loop, like leaving one room</td>
+                </tr>
+                <tr>
+                    <td>continue is the same as break</td>
+                    <td>Both “skip” something</td>
+                    <td>Continue skips one song; break stops the music</td>
+                </tr>
+                <tr>
+                    <td>A semicolon after the if line is harmless</td>
+                    <td>It looks like the end of a sentence</td>
+                    <td>if (...); ends the if with an empty action</td>
+                </tr>
+            </table>
+        </div>
+        <h2 id="practice">Practice: try it yourself</h2>
+        <p>Answer first. For <b>predict the output</b> items, type exactly what the program prints. For <b>write it</b>
+            items, type your code, then submit to reveal the model solution.</p>
+        <div id="ex"></div>
+        <h2 id="gloss">Glossary</h2>
+        <dl>
+            <dt>Flow of control</dt>
+            <dd>The order in which a program’s statements execute.</dd>
+            <dt>Selection statement</dt>
+            <dd>A statement that chooses which block runs, based on a condition: if, if-else, else-if, switch.</dd>
+            <dt>Dangling else</dt>
+            <dd>An else that the compiler attaches to the nearest unmatched if, which may not be the if the programmer
+                intended.</dd>
+            <dt>Fall-through</dt>
+            <dd>In a switch, continuing into the next case because the current one had no break.</dd>
+            <dt>Count-controlled loop</dt>
+            <dd>A loop that repeats a known number of times, using a counter.</dd>
+            <dt>Event-controlled loop</dt>
+            <dd>A loop that repeats until a condition changes: sentinel, end-of-file, or flag controlled.</dd>
+            <dt>Sentinel value</dt>
+            <dd>A special value used to signal “no more data” — not a valid data value itself.</dd>
+            <dt>Infinite loop</dt>
+            <dd>A loop whose condition never becomes false (often caused by forgetting the update).</dd>
+            <dt>break</dt>
+            <dd>Exits the nearest enclosing loop or switch immediately.</dd>
+            <dt>continue</dt>
+            <dd>Skips to the next iteration of the nearest enclosing loop.</dd>
+            <dt>Nested loop</dt>
+            <dd>A loop placed inside another loop.</dd>
+        </dl>
+        <h2 id="checku">Check understanding (interactive)</h2>
+        <p>Which construct fits each situation? Choose an answer to get feedback at once.</p>
+        <h3>A. Campus Café situations</h3>
+        <p class="msg" id="cls1score"></p>
+        <div id="cls1"></div>
+        <h3>B. City Bus Terminal situations</h3>
+        <p class="msg" id="cls2score"></p>
+        <div id="cls2"></div>
+        <h2 id="check">Self-check quiz</h2>
+        <p>Pick an answer. You will see at once whether it is right, and why.</p>
+        <div class="qz">
+            <p class="msg" id="score"></p>
+            <div id="quiz"></div><button class="btn" id="rst">Start again</button>
+        </div>
+    </main>
+    <footer>Fundamentals of Programming I · Chapter 3</footer>
+    <script>(function () {
+            var EX = [{ "t": "1. Predict the output", "p": "<code>int x = 7;<br>if (x > 5)<br>&nbsp;&nbsp;if (x > 10) cout &lt;&lt; \"big\";<br>&nbsp;&nbsp;else cout &lt;&lt; \"medium\";</code>", "a": "medium", "s": "<p>It prints <b>medium</b>. The else attaches to the <b>nearest</b> if (<code>x &gt; 10</code>), which is false for x = 7, and x &gt; 5 is true, so we reach the inner if-else, which prints \"medium\".</p>" }, { "t": "2. Predict the output", "p": "<code>switch (2) {<br>&nbsp;&nbsp;case 1: cout &lt;&lt; \"a\"; break;<br>&nbsp;&nbsp;case 2: cout &lt;&lt; \"b\";<br>&nbsp;&nbsp;case 3: cout &lt;&lt; \"c\"; break;<br>&nbsp;&nbsp;default: cout &lt;&lt; \"d\";<br>}</code>", "a": "bc", "s": "<p>It prints <b>bc</b>. Case 2 matches and prints \"b\", but there is no break, so execution falls through into case 3 and prints \"c\" too, where the break finally stops it.</p>" }, { "t": "3. Predict the output", "p": "<code>for (int i = 1; i <= 5; i++) {<br>&nbsp;&nbsp;if (i == 3) continue;<br>&nbsp;&nbsp;cout &lt;&lt; i;<br>}</code>", "a": "1245", "s": "<p>It prints <b>1245</b>. At i = 3, continue skips the print and jumps to the update, so 3 never prints, but the loop carries on with 4 and 5.</p>" }, { "t": "4. Predict the output", "p": "<code>int i = 1, sum = 0;<br>do { sum += i; i++; } while (i <= 0);<br>cout &lt;&lt; sum;</code>", "a": "1", "s": "<p>It prints <b>1</b>. do-while always runs its body at least once (sum becomes 1, i becomes 2), and only then checks the condition (2 &lt;= 0 is false), so it stops after one pass.</p>" }, { "t": "5. Write it: grade bands", "p": "Write an else-if ladder that prints the letter grade for a mark out of 100: 90+ is A, 80+ is B, 70+ is C, 60+ is D, below 60 is F.", "s": "<pre>if (mark >= 90) cout << \"A\";\nelse if (mark >= 80) cout << \"B\";\nelse if (mark >= 70) cout << \"C\";\nelse if (mark >= 60) cout << \"D\";\nelse cout << \"F\";</pre>", "k": "did you test the highest band first?" }, { "t": "6. Write it: menu with switch", "p": "Read an integer choice (1-3). Print \"Tea\", \"Coffee\", or \"Juice\" for 1, 2, 3; print \"Invalid\" for anything else. Use switch with break.", "s": "<pre>int choice;\ncin >> choice;\nswitch (choice) {\n    case 1: cout << \"Tea\"; break;\n    case 2: cout << \"Coffee\"; break;\n    case 3: cout << \"Juice\"; break;\n    default: cout << \"Invalid\";\n}</pre>", "k": "did you include break after each case?" }, { "t": "7. Write it: sum with a for loop", "p": "Read a positive integer n. Use a for loop to print the sum 1 + 2 + ... + n.", "s": "<pre>int n, sum = 0;\ncin >> n;\nfor (int i = 1; i <= n; i++) sum += i;\ncout << sum;</pre>", "k": "did your loop run from 1 to n inclusive?" }, { "t": "8. Write it: validated input with do-while", "p": "Use a do-while loop to keep asking for a number until the user enters a value between 1 and 100 inclusive.", "s": "<pre>int n;\ndo {\n    cout << \"Enter a number 1-100: \";\n    cin >> n;\n} while (n < 1 || n > 100);</pre>", "k": "did you put the question inside the loop body, so it always asks at least once?" }, { "t": "9. Write it: nested loop pattern", "p": "Use a nested for loop to print 3 rows of 4 stars each, one row per line (no extra spaces).", "s": "<pre>for (int row = 1; row <= 3; row++) {\n    for (int col = 1; col <= 4; col++) cout << \"*\";\n    cout << endl;\n}</pre>", "k": "did the inner loop handle one row, and the outer loop handle moving to the next line?" }, { "t": "10. Write it: break vs continue", "p": "Write a loop from 1 to 20 that stops completely as soon as it finds a number divisible by 7, printing each number checked before that.", "s": "<pre>for (int i = 1; i <= 20; i++) {\n    if (i % 7 == 0) break;\n    cout << i << \" \";\n}</pre>", "k": "did you use break (not continue), since the loop must stop completely?" }];
+            var ex = document.getElementById('ex');
+            EX.forEach(function (e) {
+                var d = document.createElement('div'); d.className = 'exq';
+                d.innerHTML = '<b>' + e.t + '</b><p style="margin:.3em 0">' + e.p + '</p><' + (e.a ? 'input placeholder="Type the output…"' : 'textarea placeholder="Write your code here…"') + '></' + (e.a ? 'input' : 'textarea') + '><button class="btn">Submit</button><span class="msg"></span><div class="sol" hidden><b>Model answer</b>' + e.s + (e.k ? '<p><i>Compare with yours:</i> ' + e.k + '</p>' : '') + '</div>';
+                var b = d.querySelector('button'), t = d.querySelector(e.a ? 'input' : 'textarea'), m = d.querySelector('.msg'), s = d.querySelector('.sol');
+                b.onclick = function () {
+                    var v = t.value.trim();
+                    if (e.a) { if (!v) { m.textContent = 'Type your prediction first.'; return } var ok = v.replace(/\s+/g, '') === e.a.replace(/\s+/g, ''); m.textContent = ok ? 'Correct!' : 'Not quite — see the explanation.'; m.style.color = ok ? '#2e9b57' : '#c0392b'; }
+                    else { if (v.length < 10) { m.textContent = 'Write a few lines first, then submit.'; return } m.textContent = ''; }
+                    s.hidden = false; b.disabled = true; t.readOnly = true;
+                };
+                ex.appendChild(d)
+            });
+            var Q = [["What does the C++ compiler do with an else that could match two different ifs?", "Attaches it to the nearest unmatched if", "Attaches it to the outermost if", "Refuses to compile", "Attaches it to whichever if the indentation suggests"], ["Which statement is best when comparing one value against several exact constants?", "switch", "for", "while", "do-while"], ["What happens if a case in a switch has no break?", "Execution falls through into the next case", "The switch exits immediately", "A compile-time error occurs", "The default case runs instead"], ["Which loop is guaranteed to run its body at least once?", "do-while", "while", "for", "None of these"], ["In a for loop, which part runs only once, before the loop starts?", "Initialization", "Condition", "Update", "The body"], ["What is a sentinel value?", "A special value that signals the end of input, not real data", "The first value entered", "The loop counter", "A value that causes a runtime error"], ["Which statement skips the rest of the current loop pass and moves to the next one?", "continue", "break", "return", "goto"], ["Which statement exits a loop immediately, before its condition is false?", "break", "continue", "exit the function only", "It is not possible"], ["A variable declared inside a for loop's initialization is in scope...", "only inside that loop", "for the rest of the program", "only in the next loop", "nowhere — it is an error"], ["Which is the safest way to avoid the dangling else problem?", "Use explicit braces around each if's block", "Avoid using else entirely", "Always use switch instead", "Write the else on the same line as the if"]]; var qz = document.getElementById('quiz'), sc = document.getElementById('score'), n, r;
+            function sh(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = a[i]; a[i] = a[j]; a[j] = t } return a }
+            function upd() { sc.textContent = 'Score: ' + r + ' / ' + Q.length + '  ·  answered ' + n }
+            function build() {
+                qz.innerHTML = ''; n = 0; r = 0; upd();
+                Q.forEach(function (q, i) {
+                    var o = sh(q.slice(1)), ci = o.indexOf(q[1]);
+                    var d = document.createElement('div'); d.className = 'q'; d.innerHTML = '<b>' + (i + 1) + '. ' + q[0] + '</b>';
+                    var w = document.createElement('div'); w.className = 'why'; w.hidden = true; var done = false, bs = [];
+                    o.forEach(function (t, j) {
+                        var b = document.createElement('button'); b.className = 'o'; b.textContent = t; bs.push(b);
+                        b.onclick = function () { if (done) return; done = true; n++; if (j === ci) { r++; b.classList.add('ok'); w.textContent = 'Correct.' } else { b.classList.add('no'); bs[ci].classList.add('ok'); w.textContent = 'Not quite.' } w.hidden = false; upd() }; d.appendChild(b)
+                    });
+                    d.appendChild(w); qz.appendChild(d)
+                })
+            }
+            document.getElementById('rst').onclick = build; build()
+        })();</script>
+    <script>(function () {
+            var CL = [["Give a 10% discount only if the customer shows a student ID.", "if", "There is only one action and no “otherwise”."], ["Pay by card if the balance is enough, otherwise ask for cash.", "if-else", "Exactly one of two paths."], ["Delivery is free for 200 birr or more, half price for 100 or more, otherwise full price.", "else-if", "Several bands; the first true test wins."], ["The customer presses 1 for tea, 2 for coffee, 3 for juice; any other number is invalid.", "switch", "One value compared with exact choices, with a default."], ["Prepare exactly 12 cups of tea.", "for", "The number of repeats is known."], ["Keep serving while there are customers in the queue (maybe nobody).", "while", "The count is unknown and the test comes first."], ["Ask “Anything else?” and repeat while the customer says yes. Ask at least once.", "do-while", "It must run at least once, with the test at the end."], ["Stop serving at once because the injera is finished.", "break", "Leaves the loop immediately."], ["Skip customers without a queue number but keep serving the others.", "continue", "Skips only this round of the loop."]], CL2 = [["Charge extra only if a bag weighs more than 20 kg.", "if", "There is one extra action and no “otherwise”."], ["Issue a ticket if seats are left, otherwise say “sold out”.", "if-else", "Exactly one of two paths."], ["Fare: under 5 is free, under 12 is half, 60 or over is half, otherwise full.", "else-if", "Several bands; the first true test wins."], ["The passenger enters destination code 1 to 4; any other code is invalid.", "switch", "One value compared with exact choices, with a default."], ["Check each of the 6 tyres.", "for", "The number of repeats is known."], ["Keep boarding while seats are left and people are waiting.", "while", "The count is unknown and the test comes first."], ["Announce departure at least once, and repeat while someone is missing.", "do-while", "It must run at least once, with the test at the end."], ["The bus is full, so stop boarding immediately.", "break", "Leaves the loop at once."], ["A passenger has no ticket: skip them and board the next one.", "continue", "Skips only this round of the loop."]], OPTS = ["if", "if-else", "else-if", "switch", "for", "while", "do-while", "break", "continue"];
+            function mk(arr, cid, sid) {
+                var cls = document.getElementById(cid), cs = document.getElementById(sid), n = 0, r = 0;
+                function up() { cs.textContent = 'Score: ' + r + ' / ' + arr.length + '  ·  answered ' + n } up();
+                arr.forEach(function (c, i) {
+                    var d = document.createElement('div'); d.className = 'q'; var t = document.createElement('div'); t.innerHTML = '<b>' + (i + 1) + '.</b> ' + c[0]; d.appendChild(t);
+                    var w = document.createElement('div'); w.className = 'why'; w.hidden = true; var done = false, bs = {};
+                    OPTS.forEach(function (o) {
+                        var b = document.createElement('button'); b.className = 'opt'; b.textContent = o; bs[o] = b;
+                        b.onclick = function () { if (done) return; done = true; n++; if (o === c[1]) { r++; b.classList.add('ok'); w.textContent = 'Correct. ' + c[2] } else { b.classList.add('no'); bs[c[1]].classList.add('ok'); w.textContent = 'Not quite. The best fit is ' + c[1] + '. ' + c[2] } w.hidden = false; up() }; d.appendChild(b)
+                    });
+                    d.appendChild(w); cls.appendChild(d)
+                })
+            }
+            mk(CL, 'cls1', 'cls1score'); mk(CL2, 'cls2', 'cls2score');
+        })();</script>
+</body>
+
+</html>
