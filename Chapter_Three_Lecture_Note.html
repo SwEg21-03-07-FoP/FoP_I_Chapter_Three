@@ -3055,56 +3055,357 @@ cout &lt;&lt; boolalpha &lt;&lt; (pi &gt; 3) &lt;&lt; endl;        // true</pre>
 			</div>
     </main>
     <footer>Fundamentals of Programming I · Chapter 3</footer>
-    <script>(function () {
-            var EX = [{ "t": "1. Predict the output", "p": "<code>int x = 7;<br>if (x > 5)<br>&nbsp;&nbsp;if (x > 10) cout &lt;&lt; \"big\";<br>&nbsp;&nbsp;else cout &lt;&lt; \"medium\";</code>", "a": "medium", "s": "<p>It prints <b>medium</b>. The else attaches to the <b>nearest</b> if (<code>x &gt; 10</code>), which is false for x = 7, and x &gt; 5 is true, so we reach the inner if-else, which prints \"medium\".</p>" }, { "t": "2. Predict the output", "p": "<code>switch (2) {<br>&nbsp;&nbsp;case 1: cout &lt;&lt; \"a\"; break;<br>&nbsp;&nbsp;case 2: cout &lt;&lt; \"b\";<br>&nbsp;&nbsp;case 3: cout &lt;&lt; \"c\"; break;<br>&nbsp;&nbsp;default: cout &lt;&lt; \"d\";<br>}</code>", "a": "bc", "s": "<p>It prints <b>bc</b>. Case 2 matches and prints \"b\", but there is no break, so execution falls through into case 3 and prints \"c\" too, where the break finally stops it.</p>" }, { "t": "3. Predict the output", "p": "<code>for (int i = 1; i <= 5; i++) {<br>&nbsp;&nbsp;if (i == 3) continue;<br>&nbsp;&nbsp;cout &lt;&lt; i;<br>}</code>", "a": "1245", "s": "<p>It prints <b>1245</b>. At i = 3, continue skips the print and jumps to the update, so 3 never prints, but the loop carries on with 4 and 5.</p>" }, { "t": "4. Predict the output", "p": "<code>int i = 1, sum = 0;<br>do { sum += i; i++; } while (i <= 0);<br>cout &lt;&lt; sum;</code>", "a": "1", "s": "<p>It prints <b>1</b>. do-while always runs its body at least once (sum becomes 1, i becomes 2), and only then checks the condition (2 &lt;= 0 is false), so it stops after one pass.</p>" }, { "t": "5. Write it: grade bands", "p": "Write an else-if ladder that prints the letter grade for a mark out of 100: 90+ is A, 80+ is B, 70+ is C, 60+ is D, below 60 is F.", "s": "<pre>if (mark >= 90) cout << \"A\";\nelse if (mark >= 80) cout << \"B\";\nelse if (mark >= 70) cout << \"C\";\nelse if (mark >= 60) cout << \"D\";\nelse cout << \"F\";</pre>", "k": "did you test the highest band first?" }, { "t": "6. Write it: menu with switch", "p": "Read an integer choice (1-3). Print \"Tea\", \"Coffee\", or \"Juice\" for 1, 2, 3; print \"Invalid\" for anything else. Use switch with break.", "s": "<pre>int choice;\ncin >> choice;\nswitch (choice) {\n    case 1: cout << \"Tea\"; break;\n    case 2: cout << \"Coffee\"; break;\n    case 3: cout << \"Juice\"; break;\n    default: cout << \"Invalid\";\n}</pre>", "k": "did you include break after each case?" }, { "t": "7. Write it: sum with a for loop", "p": "Read a positive integer n. Use a for loop to print the sum 1 + 2 + ... + n.", "s": "<pre>int n, sum = 0;\ncin >> n;\nfor (int i = 1; i <= n; i++) sum += i;\ncout << sum;</pre>", "k": "did your loop run from 1 to n inclusive?" }, { "t": "8. Write it: validated input with do-while", "p": "Use a do-while loop to keep asking for a number until the user enters a value between 1 and 100 inclusive.", "s": "<pre>int n;\ndo {\n    cout << \"Enter a number 1-100: \";\n    cin >> n;\n} while (n < 1 || n > 100);</pre>", "k": "did you put the question inside the loop body, so it always asks at least once?" }, { "t": "9. Write it: nested loop pattern", "p": "Use a nested for loop to print 3 rows of 4 stars each, one row per line (no extra spaces).", "s": "<pre>for (int row = 1; row <= 3; row++) {\n    for (int col = 1; col <= 4; col++) cout << \"*\";\n    cout << endl;\n}</pre>", "k": "did the inner loop handle one row, and the outer loop handle moving to the next line?" }, { "t": "10. Write it: break vs continue", "p": "Write a loop from 1 to 20 that stops completely as soon as it finds a number divisible by 7, printing each number checked before that.", "s": "<pre>for (int i = 1; i <= 20; i++) {\n    if (i % 7 == 0) break;\n    cout << i << \" \";\n}</pre>", "k": "did you use break (not continue), since the loop must stop completely?" }];
-            var ex = document.getElementById('ex');
-            EX.forEach(function (e) {
-                var d = document.createElement('div'); d.className = 'exq';
-                d.innerHTML = '<b>' + e.t + '</b><p style="margin:.3em 0">' + e.p + '</p><' + (e.a ? 'input placeholder="Type the output…"' : 'textarea placeholder="Write your code here…"') + '></' + (e.a ? 'input' : 'textarea') + '><button class="btn">Submit</button><span class="msg"></span><div class="sol" hidden><b>Model answer</b>' + e.s + (e.k ? '<p><i>Compare with yours:</i> ' + e.k + '</p>' : '') + '</div>';
-                var b = d.querySelector('button'), t = d.querySelector(e.a ? 'input' : 'textarea'), m = d.querySelector('.msg'), s = d.querySelector('.sol');
-                b.onclick = function () {
-                    var v = t.value.trim();
-                    if (e.a) { if (!v) { m.textContent = 'Type your prediction first.'; return } var ok = v.replace(/\s+/g, '') === e.a.replace(/\s+/g, ''); m.textContent = ok ? 'Correct!' : 'Not quite — see the explanation.'; m.style.color = ok ? '#2e9b57' : '#c0392b'; }
-                    else { if (v.length < 10) { m.textContent = 'Write a few lines first, then submit.'; return } m.textContent = ''; }
-                    s.hidden = false; b.disabled = true; t.readOnly = true;
-                };
-                ex.appendChild(d)
-            });
-            var Q = [["What does the C++ compiler do with an else that could match two different ifs?", "Attaches it to the nearest unmatched if", "Attaches it to the outermost if", "Refuses to compile", "Attaches it to whichever if the indentation suggests"], ["Which statement is best when comparing one value against several exact constants?", "switch", "for", "while", "do-while"], ["What happens if a case in a switch has no break?", "Execution falls through into the next case", "The switch exits immediately", "A compile-time error occurs", "The default case runs instead"], ["Which loop is guaranteed to run its body at least once?", "do-while", "while", "for", "None of these"], ["In a for loop, which part runs only once, before the loop starts?", "Initialization", "Condition", "Update", "The body"], ["What is a sentinel value?", "A special value that signals the end of input, not real data", "The first value entered", "The loop counter", "A value that causes a runtime error"], ["Which statement skips the rest of the current loop pass and moves to the next one?", "continue", "break", "return", "goto"], ["Which statement exits a loop immediately, before its condition is false?", "break", "continue", "exit the function only", "It is not possible"], ["A variable declared inside a for loop's initialization is in scope...", "only inside that loop", "for the rest of the program", "only in the next loop", "nowhere — it is an error"], ["Which is the safest way to avoid the dangling else problem?", "Use explicit braces around each if's block", "Avoid using else entirely", "Always use switch instead", "Write the else on the same line as the if"]]; var qz = document.getElementById('quiz'), sc = document.getElementById('score'), n, r;
-            function sh(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = a[i]; a[i] = a[j]; a[j] = t } return a }
-            function upd() { sc.textContent = 'Score: ' + r + ' / ' + Q.length + '  ·  answered ' + n }
-            function build() {
-                qz.innerHTML = ''; n = 0; r = 0; upd();
-                Q.forEach(function (q, i) {
-                    var o = sh(q.slice(1)), ci = o.indexOf(q[1]);
-                    var d = document.createElement('div'); d.className = 'q'; d.innerHTML = '<b>' + (i + 1) + '. ' + q[0] + '</b>';
-                    var w = document.createElement('div'); w.className = 'why'; w.hidden = true; var done = false, bs = [];
-                    o.forEach(function (t, j) {
-                        var b = document.createElement('button'); b.className = 'o'; b.textContent = t; bs.push(b);
-                        b.onclick = function () { if (done) return; done = true; n++; if (j === ci) { r++; b.classList.add('ok'); w.textContent = 'Correct.' } else { b.classList.add('no'); bs[ci].classList.add('ok'); w.textContent = 'Not quite.' } w.hidden = false; upd() }; d.appendChild(b)
-                    });
-                    d.appendChild(w); qz.appendChild(d)
-                })
-            }
-            document.getElementById('rst').onclick = build; build()
-        })();</script>
-    <script>(function () {
-            var CL = [["Give a 10% discount only if the customer shows a student ID.", "if", "There is only one action and no “otherwise”."], ["Pay by card if the balance is enough, otherwise ask for cash.", "if-else", "Exactly one of two paths."], ["Delivery is free for 200 birr or more, half price for 100 or more, otherwise full price.", "else-if", "Several bands; the first true test wins."], ["The customer presses 1 for tea, 2 for coffee, 3 for juice; any other number is invalid.", "switch", "One value compared with exact choices, with a default."], ["Prepare exactly 12 cups of tea.", "for", "The number of repeats is known."], ["Keep serving while there are customers in the queue (maybe nobody).", "while", "The count is unknown and the test comes first."], ["Ask “Anything else?” and repeat while the customer says yes. Ask at least once.", "do-while", "It must run at least once, with the test at the end."], ["Stop serving at once because the injera is finished.", "break", "Leaves the loop immediately."], ["Skip customers without a queue number but keep serving the others.", "continue", "Skips only this round of the loop."]], CL2 = [["Charge extra only if a bag weighs more than 20 kg.", "if", "There is one extra action and no “otherwise”."], ["Issue a ticket if seats are left, otherwise say “sold out”.", "if-else", "Exactly one of two paths."], ["Fare: under 5 is free, under 12 is half, 60 or over is half, otherwise full.", "else-if", "Several bands; the first true test wins."], ["The passenger enters destination code 1 to 4; any other code is invalid.", "switch", "One value compared with exact choices, with a default."], ["Check each of the 6 tyres.", "for", "The number of repeats is known."], ["Keep boarding while seats are left and people are waiting.", "while", "The count is unknown and the test comes first."], ["Announce departure at least once, and repeat while someone is missing.", "do-while", "It must run at least once, with the test at the end."], ["The bus is full, so stop boarding immediately.", "break", "Leaves the loop at once."], ["A passenger has no ticket: skip them and board the next one.", "continue", "Skips only this round of the loop."]], OPTS = ["if", "if-else", "else-if", "switch", "for", "while", "do-while", "break", "continue"];
-            function mk(arr, cid, sid) {
-                var cls = document.getElementById(cid), cs = document.getElementById(sid), n = 0, r = 0;
-                function up() { cs.textContent = 'Score: ' + r + ' / ' + arr.length + '  ·  answered ' + n } up();
-                arr.forEach(function (c, i) {
-                    var d = document.createElement('div'); d.className = 'q'; var t = document.createElement('div'); t.innerHTML = '<b>' + (i + 1) + '.</b> ' + c[0]; d.appendChild(t);
-                    var w = document.createElement('div'); w.className = 'why'; w.hidden = true; var done = false, bs = {};
-                    OPTS.forEach(function (o) {
-                        var b = document.createElement('button'); b.className = 'opt'; b.textContent = o; bs[o] = b;
-                        b.onclick = function () { if (done) return; done = true; n++; if (o === c[1]) { r++; b.classList.add('ok'); w.textContent = 'Correct. ' + c[2] } else { b.classList.add('no'); bs[c[1]].classList.add('ok'); w.textContent = 'Not quite. The best fit is ' + c[1] + '. ' + c[2] } w.hidden = false; up() }; d.appendChild(b)
-                    });
-                    d.appendChild(w); cls.appendChild(d)
-                })
-            }
-            mk(CL, 'cls1', 'cls1score'); mk(CL2, 'cls2', 'cls2score');
-        })();</script>
+		<script>
+			(function () {
+				var EX = [
+					{
+						t: "1. Predict the output",
+						p: '<code>int x = 7;<br>if (x > 5)<br>&nbsp;&nbsp;if (x > 10) cout &lt;&lt; "big";<br>&nbsp;&nbsp;else cout &lt;&lt; "medium";</code>',
+						a: "medium",
+						s: '<p>It prints <b>medium</b>. The else attaches to the <b>nearest</b> if (<code>x &gt; 10</code>), which is false for x = 7, and x &gt; 5 is true, so we reach the inner if-else, which prints "medium".</p>',
+					},
+					{
+						t: "2. Predict the output",
+						p: '<code>switch (2) {<br>&nbsp;&nbsp;case 1: cout &lt;&lt; "a"; break;<br>&nbsp;&nbsp;case 2: cout &lt;&lt; "b";<br>&nbsp;&nbsp;case 3: cout &lt;&lt; "c"; break;<br>&nbsp;&nbsp;default: cout &lt;&lt; "d";<br>}</code>',
+						a: "bc",
+						s: '<p>It prints <b>bc</b>. Case 2 matches and prints "b", but there is no break, so execution falls through into case 3 and prints "c" too, where the break finally stops it.</p>',
+					},
+					{
+						t: "3. Predict the output",
+						p: "<code>for (int i = 1; i <= 5; i++) {<br>&nbsp;&nbsp;if (i == 3) continue;<br>&nbsp;&nbsp;cout &lt;&lt; i;<br>}</code>",
+						a: "1245",
+						s: "<p>It prints <b>1245</b>. At i = 3, continue skips the print and jumps to the update, so 3 never prints, but the loop carries on with 4 and 5.</p>",
+					},
+					{
+						t: "4. Predict the output",
+						p: "<code>int i = 1, sum = 0;<br>do { sum += i; i++; } while (i <= 0);<br>cout &lt;&lt; sum;</code>",
+						a: "1",
+						s: "<p>It prints <b>1</b>. do-while always runs its body at least once (sum becomes 1, i becomes 2), and only then checks the condition (2 &lt;= 0 is false), so it stops after one pass.</p>",
+					},
+					{
+						t: "5. Write it: grade bands",
+						p: "Write an else-if ladder that prints the letter grade for a mark out of 100: 90+ is A, 80+ is B, 70+ is C, 60+ is D, below 60 is F.",
+						s: '<pre>if (mark >= 90) cout << "A";\nelse if (mark >= 80) cout << "B";\nelse if (mark >= 70) cout << "C";\nelse if (mark >= 60) cout << "D";\nelse cout << "F";</pre>',
+						k: "did you test the highest band first?",
+					},
+					{
+						t: "6. Write it: menu with switch",
+						p: 'Read an integer choice (1-3). Print "Tea", "Coffee", or "Juice" for 1, 2, 3; print "Invalid" for anything else. Use switch with break.',
+						s: '<pre>int choice;\ncin >> choice;\nswitch (choice) {\n    case 1: cout << "Tea"; break;\n    case 2: cout << "Coffee"; break;\n    case 3: cout << "Juice"; break;\n    default: cout << "Invalid";\n}</pre>',
+						k: "did you include break after each case?",
+					},
+					{
+						t: "7. Write it: sum with a for loop",
+						p: "Read a positive integer n. Use a for loop to print the sum 1 + 2 + ... + n.",
+						s: "<pre>int n, sum = 0;\ncin >> n;\nfor (int i = 1; i <= n; i++) sum += i;\ncout << sum;</pre>",
+						k: "did your loop run from 1 to n inclusive?",
+					},
+					{
+						t: "8. Write it: validated input with do-while",
+						p: "Use a do-while loop to keep asking for a number until the user enters a value between 1 and 100 inclusive.",
+						s: '<pre>int n;\ndo {\n    cout << "Enter a number 1-100: ";\n    cin >> n;\n} while (n < 1 || n > 100);</pre>',
+						k: "did you put the question inside the loop body, so it always asks at least once?",
+					},
+					{
+						t: "9. Write it: nested loop pattern",
+						p: "Use a nested for loop to print 3 rows of 4 stars each, one row per line (no extra spaces).",
+						s: '<pre>for (int row = 1; row <= 3; row++) {\n    for (int col = 1; col <= 4; col++) cout << "*";\n    cout << endl;\n}</pre>',
+						k: "did the inner loop handle one row, and the outer loop handle moving to the next line?",
+					},
+					{
+						t: "10. Write it: break vs continue",
+						p: "Write a loop from 1 to 20 that stops completely as soon as it finds a number divisible by 7, printing each number checked before that.",
+						s: '<pre>for (int i = 1; i <= 20; i++) {\n    if (i % 7 == 0) break;\n    cout << i << " ";\n}</pre>',
+						k: "did you use break (not continue), since the loop must stop completely?",
+					},
+				];
+				var ex = document.getElementById("ex");
+				EX.forEach(function (e) {
+					var d = document.createElement("div");
+					d.className = "exq";
+					d.innerHTML =
+						"<b>" +
+						e.t +
+						'</b><p style="margin:.3em 0">' +
+						e.p +
+						"</p><" +
+						(e.a ? 'input placeholder="Type the output…"' : 'textarea placeholder="Write your code here…"') +
+						"></" +
+						(e.a ? "input" : "textarea") +
+						'><button class="btn">Submit</button><span class="msg"></span><div class="sol" hidden><b>Model answer</b>' +
+						e.s +
+						(e.k ? "<p><i>Compare with yours:</i> " + e.k + "</p>" : "") +
+						"</div>";
+					var b = d.querySelector("button"),
+						t = d.querySelector(e.a ? "input" : "textarea"),
+						m = d.querySelector(".msg"),
+						s = d.querySelector(".sol");
+					b.onclick = function () {
+						var v = t.value.trim();
+						if (e.a) {
+							if (!v) {
+								m.textContent = "Type your prediction first.";
+								return;
+							}
+							var ok = v.replace(/\s+/g, "") === e.a.replace(/\s+/g, "");
+							m.textContent = ok ? "Correct!" : "Not quite — see the explanation.";
+							m.style.color = ok ? "#2e9b57" : "#c0392b";
+						} else {
+							if (v.length < 10) {
+								m.textContent = "Write a few lines first, then submit.";
+								return;
+							}
+							m.textContent = "";
+						}
+						s.hidden = false;
+						b.disabled = true;
+						t.readOnly = true;
+					};
+					ex.appendChild(d);
+				});
+				var Q = [
+					[
+						"What does the C++ compiler do with an else that could match two different ifs?",
+						"Attaches it to the nearest unmatched if",
+						"Attaches it to the outermost if",
+						"Refuses to compile",
+						"Attaches it to whichever if the indentation suggests",
+					],
+					[
+						"Which statement is best when comparing one value against several exact constants?",
+						"switch",
+						"for",
+						"while",
+						"do-while",
+					],
+					[
+						"What happens if a case in a switch has no break?",
+						"Execution falls through into the next case",
+						"The switch exits immediately",
+						"A compile-time error occurs",
+						"The default case runs instead",
+					],
+					["Which loop is guaranteed to run its body at least once?", "do-while", "while", "for", "None of these"],
+					[
+						"In a for loop, which part runs only once, before the loop starts?",
+						"Initialization",
+						"Condition",
+						"Update",
+						"The body",
+					],
+					[
+						"What is a sentinel value?",
+						"A special value that signals the end of input, not real data",
+						"The first value entered",
+						"The loop counter",
+						"A value that causes a runtime error",
+					],
+					[
+						"Which statement skips the rest of the current loop pass and moves to the next one?",
+						"continue",
+						"break",
+						"return",
+						"goto",
+					],
+					[
+						"Which statement exits a loop immediately, before its condition is false?",
+						"break",
+						"continue",
+						"exit the function only",
+						"It is not possible",
+					],
+					[
+						"A variable declared inside a for loop's initialization is in scope...",
+						"only inside that loop",
+						"for the rest of the program",
+						"only in the next loop",
+						"nowhere — it is an error",
+					],
+					[
+						"Which is the safest way to avoid the dangling else problem?",
+						"Use explicit braces around each if's block",
+						"Avoid using else entirely",
+						"Always use switch instead",
+						"Write the else on the same line as the if",
+					],
+				];
+				var qz = document.getElementById("quiz"),
+					sc = document.getElementById("score"),
+					n,
+					r;
+				function sh(a) {
+					a = a.slice();
+					for (var i = a.length - 1; i > 0; i--) {
+						var j = Math.floor(Math.random() * (i + 1)),
+							t = a[i];
+						a[i] = a[j];
+						a[j] = t;
+					}
+					return a;
+				}
+				function upd() {
+					sc.textContent = "Score: " + r + " / " + Q.length + "  ·  answered " + n;
+				}
+				function build() {
+					qz.innerHTML = "";
+					n = 0;
+					r = 0;
+					upd();
+					Q.forEach(function (q, i) {
+						var o = sh(q.slice(1)),
+							ci = o.indexOf(q[1]);
+						var d = document.createElement("div");
+						d.className = "q";
+						d.innerHTML = "<b>" + (i + 1) + ". " + q[0] + "</b>";
+						var w = document.createElement("div");
+						w.className = "why";
+						w.hidden = true;
+						var done = false,
+							bs = [];
+						o.forEach(function (t, j) {
+							var b = document.createElement("button");
+							b.className = "o";
+							b.textContent = t;
+							bs.push(b);
+							b.onclick = function () {
+								if (done) return;
+								done = true;
+								n++;
+								if (j === ci) {
+									r++;
+									b.classList.add("ok");
+									w.textContent = "Correct.";
+								} else {
+									b.classList.add("no");
+									bs[ci].classList.add("ok");
+									w.textContent = "Not quite.";
+								}
+								w.hidden = false;
+								upd();
+							};
+							d.appendChild(b);
+						});
+						d.appendChild(w);
+						qz.appendChild(d);
+					});
+				}
+				document.getElementById("rst").onclick = build;
+				build();
+			})();
+		</script>
+		<script>
+			(function () {
+				var CL = [
+						[
+							"A player’s total yellow cards decide the ban: 2 cards means a 1-match ban, 4 cards means a 2-match ban, 6 or more means a 3-match ban.",
+							"else-if",
+							"Several bands of card counts, tested in order — the first true band wins, just like a grade ladder.",
+						],
+						[
+							"When the announcer reads out the starting line-up, a player who has already been substituted out is skipped, and the announcer moves straight to the next name.",
+							"continue",
+							"The rest of that one pass (announcing that name) is skipped, but the announcer keeps going through the list.",
+						],
+						[
+							"In a penalty shootout, each team must take at least one kick before the referee checks whether the shootout can already be decided.",
+							"do-while",
+							"The kick happens first; only afterwards is the stopping condition checked — the defining feature of do-while.",
+						],
+						[
+							"A player who scores a hat-trick (three goals) is automatically named Man of the Match. Nothing extra happens for any other scoreline.",
+							"if",
+							"One action, only when a condition holds, with no “otherwise” action for other scorers.",
+						],
+						[
+							"The stadium scoreboard shows the match status using an exact code: 0 not started, 1 first half, 2 half-time, 3 second half, 4 full time.",
+							"switch",
+							"One value compared against a short list of exact constants — a textbook case for switch, not a range.",
+						],
+						[
+							"In the shootout, as soon as one team is so far ahead that the other side cannot catch up with the kicks remaining, the referee ends the shootout immediately, even though kicks are technically still left.",
+							"break",
+							"The loop (the shootout) is ended early from inside, before its own “kicks remaining” condition would naturally stop it.",
+						],
+						[
+							"Before kickoff, every player runs exactly 5 warm-up laps around the pitch.",
+							"for",
+							"The number of repeats (5 laps) is known in advance — the classic case for a for loop.",
+						],
+						[
+							"The assistant referee checks whether the ball fully crossed the goal line: if it did, it is a goal; if it did not, play continues.",
+							"if-else",
+							"Exactly one of two outcomes, never both and never neither.",
+						],
+						[
+							"While the substitution window is still open, the fourth official keeps announcing upcoming substitutions, checking before each announcement whether the window has now closed.",
+							"while",
+							"The condition (window still open) is tested before each pass, so the announcing may happen zero times if the window is already closed.",
+						],
+						[
+							"The coach holds up a number to signal which position a substitute will play: 1 Goalkeeper, 2 Defender, 3 Midfielder, 4 Forward.",
+							"switch",
+							"Again, one value against a short list of exact numbers — not a range of values.",
+						],
+						[
+							"At the final whistle, the referee ends the match immediately and hands the final score to the broadcasters.",
+							"return",
+							"The whole “match” ends at once, and a value (the final score) is handed back to whoever is waiting for it.",
+						],
+						[
+							"The groundskeeper checks each of the 4 goal areas in turn. If one is already flooded, it is left for later and the groundskeeper moves straight on to the next one.",
+							"continue",
+							"Inside a loop over the 4 areas, one case is skipped without stopping the whole inspection — continue, not break.",
+						],
+					],
+					OPTS = ["if", "if-else", "else-if", "switch", "for", "while", "do-while", "break", "continue", "return"];
+
+				var cls = document.getElementById("cls"),
+					cs = document.getElementById("clsscore"),
+					n = 0,
+					r = 0;
+				function up() {
+					cs.textContent = "Score: " + r + " / " + CL.length + "  \u00b7  answered " + n;
+				}
+				up();
+				CL.forEach(function (c, i) {
+					var d = document.createElement("div");
+					d.className = "q";
+					var t = document.createElement("div");
+					t.innerHTML = "<b>" + (i + 1) + ".</b> " + c[0];
+					d.appendChild(t);
+					var w = document.createElement("div");
+					w.className = "why";
+					w.hidden = true;
+					var done = false,
+						bs = {};
+					OPTS.forEach(function (o) {
+						var b = document.createElement("button");
+						b.className = "opt";
+						b.textContent = o;
+						bs[o] = b;
+						b.onclick = function () {
+							if (done) return;
+							done = true;
+							n++;
+							if (o === c[1]) {
+								r++;
+								b.classList.add("ok");
+								w.textContent = "Correct. " + c[2];
+							} else {
+								b.classList.add("no");
+								bs[c[1]].classList.add("ok");
+								w.textContent = "Not quite. The best fit is " + c[1] + ". " + c[2];
+							}
+							w.hidden = false;
+							up();
+						};
+						d.appendChild(b);
+					});
+					d.appendChild(w);
+					cls.appendChild(d);
+				});
+			})();
+		</script>	
 </body>
 
 </html>
